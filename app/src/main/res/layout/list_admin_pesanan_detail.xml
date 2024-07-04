@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    app:cardCornerRadius="12dp"
+    android:backgroundTint="@color/white">
+
+    <ImageView
+        android:id="@+id/ivGambarPlafon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/gambar_akun"
+        android:scaleType="centerCrop"
+        android:elevation="1dp"/>
+
+    <TextView
+        android:id="@+id/tvJudulPlafon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivGambarPlafon"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:lineSpacingExtra="3dp"
+        android:text="Plafon PVC Motif Kayu"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:elevation="20dp"/>
+
+    <TextView
+        android:id="@+id/tvTitleTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvJudulPlafon"
+        app:layout_constraintStart_toEndOf="@id/ivGambarPlafon"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="12dp"
+        android:maxLines="1"
+        android:text="Total : "
+        android:textSize="14sp"
+        android:textColor="@color/abuabu_tua"
+        android:elevation="20dp"/>
+
+
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tvTitleTotal"
+        app:layout_constraintStart_toEndOf="@id/tvTitleTotal"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+        android:maxLines="1"
+        android:text="10"
+        android:textSize="14sp"
+        android:textColor="@color/abuabu_tua"
+        android:elevation="20dp"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvTotalMeterPersegi"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintStart_toEndOf="@id/ivGambarPlafon"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tvHarga"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:layout_marginStart="14dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:text="50 M2 x 50 M2"-->
+<!--        android:textSize="14sp"-->
+<!--        android:textColor="@color/abuabu_tua"/>-->
+
+    <TextView
+        android:id="@+id/tvTitleHarga"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvTotal"
+        app:layout_constraintStart_toEndOf="@id/ivGambarPlafon"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="12dp"
+        android:maxLines="1"
+        android:text="Harga : "
+        android:textSize="14sp"
+        android:textColor="@color/abuabu_tua"
+        android:elevation="20dp"/>
+
+
+    <TextView
+        android:id="@+id/tvHarga"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tvTitleHarga"
+        app:layout_constraintStart_toEndOf="@id/tvTitleHarga"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="Rp. 150.000"
+        android:textSize="14sp"
+        android:textColor="@color/abuabu_tua"
+        android:elevation="20dp"/>
+
+    <TextView
+        android:id="@+id/tvTitleHargaTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleHarga"
+        app:layout_constraintStart_toEndOf="@id/ivGambarPlafon"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="12dp"
+        android:maxLines="1"
+        android:text="Total  Harga : "
+        android:textSize="14sp"
+        android:textColor="@color/abuabu_tua"
+        android:elevation="20dp"/>
+
+
+    <TextView
+        android:id="@+id/tvHargaTotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tvTitleHargaTotal"
+        app:layout_constraintStart_toEndOf="@id/tvTitleHargaTotal"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="Rp. 15.000.000"
+        android:textSize="14sp"
+        android:textColor="@color/abuabu_tua"
+        android:elevation="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.2dp"
+        android:background="@color/abuabu_muda"
+        app:layout_constraintTop_toBottomOf="@+id/ivGambarPlafon"
+        android:layout_marginTop="10dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

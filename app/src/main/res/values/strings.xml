@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Aplikasi Penjualan Plafon</string>
+    <string-array name="metode_pembayaran">
+        <item>Online</item>
+        <item>Ditempat</item>
+    </string-array>
+    <string name="ket_klik_file">Klik To Upload File</string>
+    <string name="add_image">Klik Untuk Masukkan Gambar</string>
+</resources>
