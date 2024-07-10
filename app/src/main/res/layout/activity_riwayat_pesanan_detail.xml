@@ -48,11 +48,93 @@
             android:maxLines="1"
             android:ellipsize="end"/>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clAlamat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/bgHeader"
+            android:paddingTop="10dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/bg_card_no_radius">
+            <TextView
+                android:id="@+id/tvTitleAlamat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Alamat Pengiriman"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:textStyle="normal"/>
+            <LinearLayout
+                android:id="@+id/llNamaDanNomorHp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvTitleAlamat"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="6dp">
+                <TextView
+                    android:id="@+id/tvNama"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama User"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:text=" | "
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"/>
+
+                <TextView
+                    android:id="@+id/tvNomorHp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="08122222222"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvAlamat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/llNamaDanNomorHp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Alamat Anda akan ada disini"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textStyle="normal"/>
+            <TextView
+                android:id="@+id/tvAlamatDetail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvAlamat"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text=""
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textStyle="normal"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDetailRiwayatPesanan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/bgHeader"
+            app:layout_constraintTop_toBottomOf="@id/clAlamat"
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"

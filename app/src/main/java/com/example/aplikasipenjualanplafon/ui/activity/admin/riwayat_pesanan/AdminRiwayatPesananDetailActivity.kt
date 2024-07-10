@@ -48,13 +48,15 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
     private var tanggalDanWaktu = TanggalDanWaktu()
     private var checkKonfirmasi = "0"
     private var idUser = "0"
-    private var alamat = "0"
     private var waktu = "0"
 
     private var listPlafon: ArrayList<PlafonModel> = arrayListOf()
     private var idPlafon = "0"
     private var namaPlafon = ""
     private var namaUser = ""
+    private var nomorHp = ""
+    private var alamat = "0"
+    private var detailAlamat = ""
     private var metodePembayaran = ""
 
     private var listIdPemesanan: ArrayList<String> = arrayListOf()
@@ -89,12 +91,12 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
                 finish()
             }
             btnTambah.setOnClickListener {
-                setShowDialogTambah(idUser, namaUser, alamat, metodePembayaran)
+                setShowDialogTambah(idUser, namaUser, nomorHp, alamat, detailAlamat, metodePembayaran)
             }
         }
     }
 
-    private fun setShowDialogTambah(idUser:String, namaUser:String, alamat:String, metodePembayaran:String) {
+    private fun setShowDialogTambah(idUser:String, namaUser:String, nomorHp:String, alamat:String, detailAlamat:String, metodePembayaran:String) {
         val view = AlertDialogAdminRiwayatPesananDetailBinding.inflate(layoutInflater)
 
         val alertDialog = AlertDialog.Builder(this@AdminRiwayatPesananDetailActivity)
@@ -105,8 +107,10 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
 
         view.apply {
 
-            tvNama.text = namaUser
+            etNamaLengkap.setText(namaUser)
+            etNomorHp.setText(nomorHp)
             etAlamat.setText(alamat)
+            etDetailAlamat.setText(detailAlamat)
 
             tvPlafon.setOnClickListener {
                 setPilihPlafon(view)
@@ -187,8 +191,20 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
             btnSimpan.setOnClickListener {
                 var cek = false
 
+                if(etNamaLengkap.text.toString().trim().isEmpty()){
+                    etNamaLengkap.error = "Tidak Boleh Kosong"
+                    cek = true
+                }
+                if(etNomorHp.text.toString().trim().isEmpty()){
+                    etNomorHp.error = "Tidak Boleh Kosong"
+                    cek = true
+                }
                 if(etAlamat.text.toString().trim().isEmpty()){
                     etAlamat.error = "Tidak Boleh Kosong"
+                    cek = true
+                }
+                if(etDetailAlamat.text.toString().trim().isEmpty()){
+                    etDetailAlamat.error = "Tidak Boleh Kosong"
                     cek = true
                 }
                 if(etJumlah.text.toString().trim() == "0"){
@@ -207,10 +223,15 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
 
                 if(!cek){
                     val jumlah = etJumlah.text.toString().trim()
+                    val valueNamaLengkap = etNamaLengkap.text.toString().trim()
+                    val valueNomorHp = etNomorHp.text.toString().trim()
                     val valueAlamat = etAlamat.text.toString().trim()
+                    val valueDetailAlamat = etDetailAlamat.text.toString().trim()
                     val idPemesanan = selectedValueIdPemesanan
 
-                    postTambahRiwayatPesanan(idUser, idPemesanan, idPlafon, valueAlamat, jumlah, selectedValue)
+//                    Log.d("DetailTAG", "setShowDialogTambah: $idUser, $idPemesanan, $idPlafon, $valueNomorHp, $valueNamaLengkap, $valueAlamat, $valueDetailAlamat, $jumlah, $selectedValue")
+
+                    postTambahRiwayatPesanan(idUser, idPemesanan, idPlafon, valueNamaLengkap, valueNomorHp, valueAlamat, valueDetailAlamat, jumlah, selectedValue)
                     dialogInputan.dismiss()
                 }
             }
@@ -338,11 +359,14 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
         idUser: String,
         idPemesanan: String,
         idPlafon: String,
+        namaLengkap: String,
+        nomorHp: String,
         alamat: String,
+        detailAlamat: String,
         jumlah: String,
         metodePembayaran: String,
     ) {
-        viewModel.postTambahRiwayatPesananDetail(idUser, idPemesanan, idPlafon, alamat, jumlah, metodePembayaran)
+        viewModel.postTambahRiwayatPesananDetail(idUser, idPemesanan, idPlafon, namaLengkap, nomorHp, alamat, detailAlamat, jumlah, metodePembayaran)
     }
 
     private fun getTambahRiwayatPesanan(){
@@ -429,7 +453,7 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
     private fun setDataKeterangan(data: ArrayList<AdminPesananDetailModel>){
         val valueData = data[0]
         binding.apply {
-            llKeterangan.visibility = View.VISIBLE
+//            llKeterangan.visibility = View.VISIBLE
 
             tvNama.text = valueData.nama
             tvAlamat.text = valueData.alamat
@@ -443,16 +467,18 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
         }
 
 //        idUser = valueData.id_user!!
-        alamat = valueData.alamat!!
-        waktu = valueData.waktu!!
         namaUser = valueData.nama!!
+        nomorHp = valueData.nomorHp!!
+        alamat = valueData.alamat!!
+        detailAlamat = valueData.detail_alamat!!
+        waktu = valueData.waktu!!
         metodePembayaran = valueData.metodePembayaran!!
     }
 
     private fun setAdapter(data: ArrayList<RiwayatPesananValModel>) {
         adapter = AdminRiwayatPesananDetailAdapter(data, object: OnClickItem.ClickAdminRiwayatPesananDetail{
-            override fun clickAlamat(alamat: String, it: View) {
-                showClickKeterangan("Alamat", alamat)
+            override fun clickKeterangan(keterangan: String, isi:String, it: View) {
+                showClickKeterangan(keterangan, isi)
             }
             override fun clickJenisPlafon(jenisPlafon: String, it: View) {
                 showClickKeterangan("Jenis Plafon", jenisPlafon)
@@ -554,7 +580,7 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
 
             btnKonfirmasi.setOnClickListener {
                 dialogInputan.dismiss()
-                postHapusRiwayatPesanan(pesanan.id_riwayat_pesanan)
+                postHapusRiwayatPesanan(pesanan.id_riwayat_pesanan!!)
             }
 
             btnBatal.setOnClickListener {
@@ -564,8 +590,9 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun postHapusRiwayatPesanan(idRiwayatPesanan: String?) {
-        viewModel.postHapusRiwayatPesanan(idRiwayatPesanan!!)
+    private fun postHapusRiwayatPesanan(idRiwayatPesanan: String) {
+        Log.d("DetailTAG", "postHapusRiwayatPesanan: $idRiwayatPesanan")
+        viewModel.postHapusRiwayatPesanan(idRiwayatPesanan)
     }
 
     private fun getHapusPesanan(){
@@ -605,8 +632,10 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
         dialogInputan.show()
 
         view.apply {
-            tvNama.text = namaUser
+            etNamaLengkap.setText(namaUser)
+            etNomorHp.setText(pesanan.nomor_hp)
             etAlamat.setText(pesanan.alamat)
+            etDetailAlamat.setText(pesanan.detail_alamat)
             etJumlah.setText(pesanan.jumlah)
             tvPlafon.text = pesanan.jenis_plafon
             idPlafon = pesanan.id_plafon!!
@@ -712,11 +741,14 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
 
                 if(!cek){
                     val jumlah = etJumlah.text.toString().trim()
+                    val valueNama = etNamaLengkap.text.toString().trim()
+                    val valueNomorHp = etNomorHp.text.toString().trim()
                     val valueAlamat = etAlamat.text.toString().trim()
+                    val valueDetailAlamat = etDetailAlamat.text.toString().trim()
                     val idPemesanan = selectedValueIdPemesanan
 
                     postUpdateRiwayatPesanan(
-                        pesanan.id_riwayat_pesanan!!, idUser, idPemesanan, idPlafon, valueAlamat, jumlah, selectedValue
+                        pesanan.id_riwayat_pesanan!!, idUser, idPemesanan, idPlafon, valueNama, valueNomorHp, valueAlamat, valueDetailAlamat, jumlah, selectedValue
                     )
                     dialogInputan.dismiss()
                 }
@@ -732,11 +764,14 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
         idUser: String,
         idPemesanan: String,
         idPlafon: String,
+        namaLengkap: String,
+        nomorHp: String,
         alamat: String,
+        detailAlamat: String,
         jumlah: String,
         metodePembayaran: String,
     ) {
-        viewModel.postUpdateRiwayatPesanan(idRiwayatPesanan, idUser, idPemesanan, idPlafon, alamat, jumlah, metodePembayaran)
+        viewModel.postUpdateRiwayatPesanan(idRiwayatPesanan, idUser, idPemesanan, idPlafon, namaLengkap, nomorHp, alamat, detailAlamat, jumlah, metodePembayaran)
         Log.d("AdminRiwayatPesananDetailActivityTAG", "idRiwayatPesanan: $idRiwayatPesanan, idUser: $idUser, idPemesanan: $idPemesanan, idPlafon: $idPlafon, alamat: $alamat, jumlah: $jumlah, metodePembayaran: $metodePembayaran,  ")
     }
 

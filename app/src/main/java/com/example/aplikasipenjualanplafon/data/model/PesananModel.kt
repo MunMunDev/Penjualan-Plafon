@@ -18,7 +18,10 @@ class PesananModel (
     val jumlah: String? = null,
 
     @SerializedName("plafon")
-    val plafon: ArrayList<PlafonModel>? = null
+    val plafon: ArrayList<PlafonModel>? = null,
+
+    @SerializedName("alamat")
+    val alamat: ArrayList<AlamatModel>? = null,
 
 ): Parcelable {
     constructor(parcel: Parcel) : this(

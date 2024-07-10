@@ -42,7 +42,6 @@ object AppModule {
     fun loading(): LoadingAlertDialog = LoadingAlertDialog()
 
     @Provides
-    @Singleton
     fun kataAcak(): KataAcak = KataAcak()
 
     @Provides

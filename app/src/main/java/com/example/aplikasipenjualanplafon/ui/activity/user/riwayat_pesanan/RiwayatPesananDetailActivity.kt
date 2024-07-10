@@ -65,9 +65,19 @@ class RiwayatPesananDetailActivity : AppCompatActivity() {
 
     private fun setSuccessFetchRiwayatPembayaran(data: ArrayList<RiwayatPesananValModel>) {
         if(data.isNotEmpty()){
+            setAlamat(data)
             setAdapter(data)
         } else{
             Toast.makeText(this@RiwayatPesananDetailActivity, "Tidak ada data Jenis Plafon", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setAlamat(data: ArrayList<RiwayatPesananValModel>) {
+        binding.apply {
+            tvNama.text = data[0].nama_lengkap
+            tvNomorHp.text = data[0].nomor_hp
+            tvAlamat.text = data[0].alamat
+            tvAlamatDetail.text = data[0].detail_alamat
         }
     }
 

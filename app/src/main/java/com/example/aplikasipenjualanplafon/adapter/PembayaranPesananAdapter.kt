@@ -33,10 +33,13 @@ class PembayaranPesananAdapter(
         val dataPesanan = listPlafon[position]
 
         holder.binding.apply {
-            val hargaTotal = dataPesanan.jumlah!!.toInt() * dataPesanan.plafon!![0].harga!!.toInt()
+            val jumlah = dataPesanan.jumlah!!.toInt()
+            val harga = dataPesanan.plafon!![0].harga!!.toInt()
+            val hargaTotal = jumlah * harga
             tvJenisPlafon.text = dataPesanan.plafon[0].jenis_plafon!![0].jenis_plafon
-            tvPanjangKaliLebar.text = dataPesanan.plafon[0].ukuran
-            tvHarga.text = rupiah.rupiah(hargaTotal.toLong())
+            tvJumlah.text = "x$jumlah"
+            tvHarga.text = rupiah.rupiah(harga.toLong())
+            tvTotalHarga.text = rupiah.rupiah(hargaTotal.toLong())
 //            tvPanjangKaliLebar.text = "${dataPesanan.panjang} X ${dataPesanan.lebar} m2"
 
         }

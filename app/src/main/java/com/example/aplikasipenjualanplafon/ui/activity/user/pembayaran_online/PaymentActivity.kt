@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,11 +14,11 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.aplikasipenjualanplafon.R
 import com.example.aplikasipenjualanplafon.adapter.PembayaranPesananAdapter
-import com.example.aplikasipenjualanplafon.data.model.PembayaranModel
+import com.example.aplikasipenjualanplafon.data.model.AlamatModel
 import com.example.aplikasipenjualanplafon.data.model.PesananModel
-import com.example.aplikasipenjualanplafon.data.model.PlafonModel
 import com.example.aplikasipenjualanplafon.data.model.ResponseModel
 import com.example.aplikasipenjualanplafon.databinding.ActivityPaymentBinding
+import com.example.aplikasipenjualanplafon.ui.activity.user.alamat.PilihAlamatActivity
 import com.example.aplikasipenjualanplafon.ui.activity.user.main.MainActivity
 import com.example.aplikasipenjualanplafon.utils.Constant
 import com.example.aplikasipenjualanplafon.utils.KataAcak
@@ -48,6 +50,10 @@ class PaymentActivity : AppCompatActivity() {
     @Inject lateinit var loading: LoadingAlertDialog
     private var totalBiaya = 0.0
     private var uuid = UUID.randomUUID().toString()
+    @Inject
+    lateinit var kataAcak: KataAcak
+
+    private var acak = ""
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var customerDetails: CustomerDetails
@@ -55,14 +61,21 @@ class PaymentActivity : AppCompatActivity() {
     private lateinit var initTransactionDetails: SnapTransactionDetail
 
     private var idUser = ""
+    private var namaLengkap = ""
+    private var nomorHp = ""
     private var alamat = ""
+    private var detailAlamat = ""
     private var jenisPembayaran = ""
+
+    private var selectedValue = ""
+    private var numberPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        acak = kataAcak.getHurufDanAngka()
         setSharedPreferencesLogin()
         setDataSebelumnya()
         setButton()
@@ -70,13 +83,14 @@ class PaymentActivity : AppCompatActivity() {
         fetchDataPembayaran(sharedPreferencesLogin.getIdUser().toString())
         getDataPembayaran()
         getDataRegistrasiPembayaran()
+        getTambahPesananDitempat()
     }
 
     private fun setDataSebelumnya() {
         val i = intent.extras
         if(i!=null){
-            alamat = i.getString("alamat")!!
-            jenisPembayaran = i.getString("jenisPembayaran")!!
+//            alamat = i.getString("alamat")!!
+//            jenisPembayaran = i.getString("jenisPembayaran")!!
         }
     }
 
@@ -90,13 +104,71 @@ class PaymentActivity : AppCompatActivity() {
                 finish()
             }
             btnBayar.setOnClickListener {
-                fetchDataRegistrasiPembayaran(uuid, idUser)
+                if(tvAlamat.text.toString().trim() == resources.getString(R.string.alamat).trim()){
+                    Toast.makeText(this@PaymentActivity, "Tolong masukkan alamat anda", Toast.LENGTH_SHORT).show()
+                } else{
+                    if(numberPosition == 0){
+//                        fetchDataRegistrasiPembayaran(uuid, idUser)
+                        fetchDataRegistrasiPembayaran(acak, idUser, namaLengkap, nomorHp, alamat, detailAlamat)
+                    } else{
+                        postTambahPesananDitempat(idUser, namaLengkap, nomorHp, alamat, detailAlamat, jenisPembayaran)
+                    }
+                }
+            }
+
+            clAlamat.setOnClickListener {
+                startActivity(Intent(this@PaymentActivity, PilihAlamatActivity::class.java))
+                finish()
             }
         }
     }
 
-    private fun fetchDataRegistrasiPembayaran(idPembayaran: String, idUser: String) {
-        viewModel.postRegistrasiPembayaran(idPembayaran, idUser, "Pending")
+    private fun postTambahPesananDitempat(
+        idUser: String,
+        namaLengkap: String,
+        nomorHp: String,
+        alamat: String,
+        detailAlamat: String,
+        jenisPembayaran: String
+    ) {
+        viewModel.postPesan(idUser, namaLengkap, nomorHp, alamat, detailAlamat, jenisPembayaran)
+    }
+    private fun getTambahPesananDitempat(){
+        viewModel.getPostPesan().observe(this@PaymentActivity){result->
+            when(result){
+                is UIState.Loading -> loading.alertDialogLoading(this@PaymentActivity)
+                is UIState.Failure -> setFailurePostPesan(result.message)
+                is UIState.Success -> setSuccessPostPesan(result.data)
+            }
+        }
+    }
+
+    private fun setFailurePostPesan(message: String) {
+        loading.alertDialogCancel()
+        Toast.makeText(this@PaymentActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setSuccessPostPesan(data: ArrayList<ResponseModel>) {
+        loading.alertDialogCancel()
+        if(data.isNotEmpty()){
+            if(data[0].status=="0"){
+                Toast.makeText(this@PaymentActivity, "Berhasil", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@PaymentActivity, MainActivity::class.java))
+                finish()
+            } else{
+                Toast.makeText(this@PaymentActivity, data[0].message_response, Toast.LENGTH_SHORT).show()
+            }
+        } else{
+            Toast.makeText(this@PaymentActivity, "No respon", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun fetchDataRegistrasiPembayaran(
+        idPembayaran: String, idUser: String,
+        namaLengkap: String, nomorHp: String,
+        alamat: String, detailAlamat: String
+    ) {
+        viewModel.postRegistrasiPembayaran(idPembayaran, idUser, "Pending", namaLengkap, nomorHp, alamat, detailAlamat)
     }
 
     private fun getDataRegistrasiPembayaran() {
@@ -116,16 +188,20 @@ class PaymentActivity : AppCompatActivity() {
 
     private fun setDataSuccessRegistrasiPembayaran(data: ArrayList<ResponseModel>) {
         loading.alertDialogCancel()
-        if(data[0].status == "0"){
-            UiKitApi.getDefaultInstance().startPaymentUiFlow(
-                activity = this@PaymentActivity,
-                launcher = launcher,
-                transactionDetails = initTransactionDetails,
-                customerDetails = customerDetails,
-                itemDetails = itemDetails
-            )
-        }else{
-            Toast.makeText(this@PaymentActivity, "Gagal Registrasi", Toast.LENGTH_SHORT).show()
+        if(data.isNotEmpty()){
+            if(data[0].status == "0"){
+                UiKitApi.getDefaultInstance().startPaymentUiFlow(
+                    activity = this@PaymentActivity,
+                    launcher = launcher,
+                    transactionDetails = initTransactionDetails,
+                    customerDetails = customerDetails,
+                    itemDetails = itemDetails
+                )
+            }else{
+                Toast.makeText(this@PaymentActivity, "Gagal Registrasi", Toast.LENGTH_SHORT).show()
+            }
+        } else{
+            Toast.makeText(this@PaymentActivity, "Bermasalah di web", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -135,6 +211,7 @@ class PaymentActivity : AppCompatActivity() {
         setInitTransactionDetails()
         buildUiKit()
     }
+
     private fun buildUiKit() {
         setInitTransactionDetails()
         UiKitApi.Builder()
@@ -145,6 +222,7 @@ class PaymentActivity : AppCompatActivity() {
             .build()
         uiKitCustomSetting()
     }
+
     private fun uiKitCustomSetting() {
         val uIKitCustomSetting = UiKitApi.getDefaultInstance().uiKitSetting
         uIKitCustomSetting.saveCardChecked = true
@@ -211,9 +289,9 @@ class PaymentActivity : AppCompatActivity() {
             )
 
             binding.apply {
+                setData(data)
                 setAdapter(data)
                 tvTotalTagihan.text = rupiah.rupiah(total.toLong())
-                isiPembayaranSekarang.visibility = View.VISIBLE
             }
         } else{
             Toast.makeText(this@PaymentActivity, "Terima Kasih Telah Membayar", Toast.LENGTH_SHORT).show()
@@ -221,6 +299,71 @@ class PaymentActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    private fun setData(data: ArrayList<PesananModel>) {
+        binding.apply {
+            // Alamat
+            var alamatModel = AlamatModel("", "", "", "", "", "", "")
+            if(data[0].alamat!!.isNotEmpty()){
+                for(values in data[0].alamat!!){
+                    if(values.main == "1"){
+                        alamatModel = values
+                    }
+                }
+            } else{
+                // Tidak ada data
+                tvNama.text = sharedPreferencesLogin.getNama()
+                tvNomorHp.text = sharedPreferencesLogin.getNomorHp()
+                tvAlamat.text = resources.getString(R.string.alamat)
+            }
+            if(alamatModel.id_alamat!!.isNotEmpty()){
+                tvNama.text = alamatModel.nama_lengkap
+                tvNomorHp.text = alamatModel.nomor_hp
+                tvAlamat.text = alamatModel.alamat
+                tvAlamatDetail.text = alamatModel.detail_alamat
+            } else{
+                tvNama.text = sharedPreferencesLogin.getNama()
+                tvNomorHp.text = sharedPreferencesLogin.getNomorHp()
+                tvAlamat.text = resources.getString(R.string.alamat)
+            }
+//            tvNama.text = alamatModel.nama_lengkap
+//            tvNomorHp.text = alamatModel.nomor_hp
+//            tvAlamat.text = alamatModel.alamat
+//            tvAlamatDetail.text = alamatModel.detail_alamat
+
+            namaLengkap = alamatModel.nama_lengkap!!
+            nomorHp = alamatModel.nomor_hp!!
+            alamat = alamatModel.alamat!!
+            detailAlamat = alamatModel.detail_alamat!!
+
+            // Spinner Metode Pembayaran
+            val arrayAdapter = ArrayAdapter.createFromResource(
+                this@PaymentActivity,
+                R.array.metode_pembayaran,
+                android.R.layout.simple_spinner_item
+            )
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spMetodePembayaran.adapter = arrayAdapter
+
+            spMetodePembayaran.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    numberPosition = spMetodePembayaran.selectedItemPosition
+                    selectedValue = spMetodePembayaran.selectedItem.toString()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+            }
+
+            spMetodePembayaran.adapter = arrayAdapter
+        }
     }
 
     private fun setAdapter(data: ArrayList<PesananModel>) {
@@ -232,19 +375,32 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun setInitTransactionDetails() {
+//        initTransactionDetails = SnapTransactionDetail(
+//            uuid,
+//            totalBiaya
+//        )
         initTransactionDetails = SnapTransactionDetail(
-            uuid,
+            acak,
             totalBiaya
         )
     }
 
     private fun setCustomerDetails() {
-        var nomorHp = sharedPreferencesLogin.getNomorHp()
+//        var nomorHp = sharedPreferencesLogin.getNomorHp()
+//        if(nomorHp == ""){
+//            nomorHp = "0"
+//        }
+//        customerDetails = CustomerDetails(
+//            firstName = sharedPreferencesLogin.getNama(),
+//            customerIdentifier = "${sharedPreferencesLogin.getIdUser()}",
+//            email = "mail@mail.com",
+//            phone = nomorHp
+//        )
         if(nomorHp == ""){
             nomorHp = "0"
         }
         customerDetails = CustomerDetails(
-            firstName = sharedPreferencesLogin.getNama(),
+            firstName = namaLengkap,
             customerIdentifier = "${sharedPreferencesLogin.getIdUser()}",
             email = "mail@mail.com",
             phone = nomorHp

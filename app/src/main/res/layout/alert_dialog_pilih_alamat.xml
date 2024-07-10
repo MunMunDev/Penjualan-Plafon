@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Riwayat Pesanan"
+            android:text="Alamat"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="18sp"
@@ -45,41 +45,13 @@
                 android:orientation="vertical"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp">
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="6dp"
-                    android:text="ID Pemesanan"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-                <Spinner
-                    android:id="@+id/spIdPemesanan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:hint="Masukkan ID Pemesanan"
-                    android:textColor="@color/black"
-                    android:textStyle="normal"
-                    android:textSize="16sp"
-                    android:inputType="text"
-                    android:maxLength="50"
-                    android:background="@drawable/bg_card" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="6dp"
-                    android:text="Nama"
+                    android:text="Nama Lengkap"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
@@ -87,13 +59,15 @@
                     android:id="@+id/etNamaLengkap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/etEditNomorHp"
                     android:layout_marginTop="2dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:hint="Masukkan Nama"
+                    android:hint="Masukkan Nama Lengkap"
                     android:textColor="@color/black"
                     android:textStyle="normal"
                     android:textSize="16sp"
+                    android:inputType="text"
                     android:maxLength="100"
                     android:background="@drawable/bg_card" />
 
@@ -104,7 +78,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="6dp"
-                    android:text="Nomor Hp"
+                    android:text="Nomor HP"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
@@ -112,16 +86,16 @@
                     android:id="@+id/etNomorHp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/etEditNomorHp"
                     android:layout_marginTop="2dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:hint="Masukkan Nomor Hp"
+                    android:hint="Masukkan Nomor HP"
                     android:textColor="@color/black"
                     android:textStyle="normal"
                     android:textSize="16sp"
                     android:inputType="number"
                     android:maxLength="14"
-                    android:lines="1"
                     android:background="@drawable/bg_card" />
 
                 <TextView
@@ -139,6 +113,7 @@
                     android:id="@+id/etAlamat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/etEditNomorHp"
                     android:layout_marginTop="2dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
@@ -146,6 +121,8 @@
                     android:textColor="@color/black"
                     android:textStyle="normal"
                     android:textSize="16sp"
+                    android:inputType="textMultiLine"
+                    android:maxLength="200"
                     android:lines="3"
                     android:background="@drawable/bg_card" />
 
@@ -156,7 +133,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="6dp"
-                    android:text="DetailAlamat"
+                    android:text="Detail Alamat"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
@@ -164,102 +141,18 @@
                     android:id="@+id/etDetailAlamat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/etEditNomorHp"
                     android:layout_marginTop="2dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:hint="Masukkan Alamat"
+                    android:hint="Misal: Kosan A Kamar 01"
                     android:textColor="@color/black"
                     android:textStyle="normal"
                     android:textSize="16sp"
+                    android:inputType="textMultiLine"
+                    android:maxLength="200"
                     android:lines="3"
                     android:background="@drawable/bg_card" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="6dp"
-                    android:text="Jumlah"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-                <EditText
-                    android:id="@+id/etJumlah"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:hint="Masukkan Jumlah"
-                    android:textColor="@color/black"
-                    android:textStyle="normal"
-                    android:textSize="16sp"
-                    android:inputType="number"
-                    android:maxLength="15"
-                    android:background="@drawable/bg_card" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="6dp"
-                    android:text="Plafon"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-<!--                <Spinner-->
-<!--                    android:id="@+id/spPlafon"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="2dp"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textStyle="normal"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:inputType="text"-->
-<!--                    android:maxLength="70"-->
-<!--                    android:background="@drawable/bg_card" />-->
-                <TextView
-                    android:id="@+id/tvPlafon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:textColor="@color/black"
-                    android:textStyle="normal"
-                    android:textSize="16sp"
-                    android:hint="Klik Pilih Plafon"
-                    android:background="@drawable/bg_card" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="6dp"
-                    android:text="Metode Pembayaran"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-                <Spinner
-                    android:id="@+id/spJenisPembayaran"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:textColor="@color/black"
-                    android:textStyle="normal"
-                    android:textSize="16sp"
-                    android:background="@drawable/bg_card" />
-
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

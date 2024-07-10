@@ -86,7 +86,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, AkunActivity::class.java))
             }
             btnPesan.setOnClickListener {
-                showDialogPesan(listPesanan)
+//                showDialogPesan(listPesanan)
+                val i = Intent(this@MainActivity, PaymentActivity::class.java)
+                i.putParcelableArrayListExtra("pesanan", listPesanan)
+                startActivity(i)
             }
         }
     }

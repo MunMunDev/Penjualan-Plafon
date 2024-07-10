@@ -2,16 +2,13 @@ package com.example.aplikasipenjualanplafon.adapter
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aplikasipenjualanplafon.R
-import com.example.aplikasipenjualanplafon.data.model.PesananModel
 import com.example.aplikasipenjualanplafon.data.model.RiwayatPesananValModel
-import com.example.aplikasipenjualanplafon.databinding.ListAdminPesananBinding
 import com.example.aplikasipenjualanplafon.databinding.ListAdminRiwayatPesananBinding
 import com.example.aplikasipenjualanplafon.utils.Constant
 import com.example.aplikasipenjualanplafon.utils.KonversiRupiah
@@ -42,7 +39,10 @@ class AdminRiwayatPesananDetailAdapter(
             if(position==0){
                 tvNo.text = "NO"
                 tvIdPemesanan.text = "ID"
+                tvNama.text = "Nama"
+                tvNomorHp.text = "Nomor Hp"
                 tvAlamat.text = "Alamat"
+                tvDetailAlamat.text = "Detail Alamat"
                 tvJenisPlafon.text = "Jenis Plafon"
                 tvJumlah.text = "Jumlah"
                 tvHarga.text = "Harga"
@@ -54,7 +54,10 @@ class AdminRiwayatPesananDetailAdapter(
 
                 tvNo.setBackgroundResource(R.drawable.bg_table_title)
                 tvIdPemesanan.setBackgroundResource(R.drawable.bg_table_title)
+                tvNama.setBackgroundResource(R.drawable.bg_table_title)
+                tvNomorHp.setBackgroundResource(R.drawable.bg_table_title)
                 tvAlamat.setBackgroundResource(R.drawable.bg_table_title)
+                tvDetailAlamat.setBackgroundResource(R.drawable.bg_table_title)
                 tvJenisPlafon.setBackgroundResource(R.drawable.bg_table_title)
                 tvJumlah.setBackgroundResource(R.drawable.bg_table_title)
                 tvHarga.setBackgroundResource(R.drawable.bg_table_title)
@@ -68,7 +71,10 @@ class AdminRiwayatPesananDetailAdapter(
 
                 tvNo.setTextColor(Color.parseColor("#ffffff"))
                 tvIdPemesanan.setTextColor(Color.parseColor("#ffffff"))
+                tvNama.setTextColor(Color.parseColor("#ffffff"))
+                tvNomorHp.setTextColor(Color.parseColor("#ffffff"))
                 tvAlamat.setTextColor(Color.parseColor("#ffffff"))
+                tvDetailAlamat.setTextColor(Color.parseColor("#ffffff"))
                 tvJenisPlafon.setTextColor(Color.parseColor("#ffffff"))
                 tvJumlah.setTextColor(Color.parseColor("#ffffff"))
                 tvHarga.setTextColor(Color.parseColor("#ffffff"))
@@ -97,7 +103,10 @@ class AdminRiwayatPesananDetailAdapter(
 
                 tvNo.text = "$position"
                 tvIdPemesanan.text = pesanan.id_pemesanan
+                tvNama.text = pesanan.nama_lengkap
+                tvNomorHp.text = pesanan.nomor_hp
                 tvAlamat.text = pesanan.alamat
+                tvDetailAlamat.text = pesanan.detail_alamat
                 tvJenisPlafon.text = pesanan.jenis_plafon
                 tvJumlah.text = pesanan.jumlah
                 tvHarga.text = rupiah.rupiah(pesanan.harga!!.trim().toLong())
@@ -109,7 +118,10 @@ class AdminRiwayatPesananDetailAdapter(
 
                 tvNo.setBackgroundResource(R.drawable.bg_table)
                 tvIdPemesanan.setBackgroundResource(R.drawable.bg_table)
+                tvNama.setBackgroundResource(R.drawable.bg_table)
+                tvNomorHp.setBackgroundResource(R.drawable.bg_table)
                 tvAlamat.setBackgroundResource(R.drawable.bg_table)
+                tvDetailAlamat.setBackgroundResource(R.drawable.bg_table)
                 tvJenisPlafon.setBackgroundResource(R.drawable.bg_table)
                 tvJumlah.setBackgroundResource(R.drawable.bg_table)
                 tvHarga.setBackgroundResource(R.drawable.bg_table)
@@ -124,7 +136,10 @@ class AdminRiwayatPesananDetailAdapter(
 
                 tvNo.setTextColor(Color.parseColor("#000000"))
                 tvIdPemesanan.setTextColor(Color.parseColor("#000000"))
+                tvNama.setTextColor(Color.parseColor("#000000"))
+                tvNomorHp.setTextColor(Color.parseColor("#000000"))
                 tvAlamat.setTextColor(Color.parseColor("#000000"))
+                tvDetailAlamat.setTextColor(Color.parseColor("#000000"))
                 tvJenisPlafon.setTextColor(Color.parseColor("#000000"))
                 tvJumlah.setTextColor(Color.parseColor("#000000"))
                 tvHarga.setTextColor(Color.parseColor("#000000"))
@@ -136,6 +151,10 @@ class AdminRiwayatPesananDetailAdapter(
 
                 tvNo.setTypeface(null, Typeface.NORMAL)
                 tvIdPemesanan.setTypeface(null, Typeface.NORMAL)
+                tvNama.setTypeface(null, Typeface.NORMAL)
+                tvNomorHp.setTypeface(null, Typeface.NORMAL)
+                tvAlamat.setTypeface(null, Typeface.NORMAL)
+                tvDetailAlamat.setTypeface(null, Typeface.NORMAL)
                 tvJenisPlafon.setTypeface(null, Typeface.NORMAL)
                 tvJumlah.setTypeface(null, Typeface.NORMAL)
                 tvHarga.setTypeface(null, Typeface.NORMAL)
@@ -154,8 +173,17 @@ class AdminRiwayatPesananDetailAdapter(
                 ivGambarPlafon.setOnClickListener {
                     onClick.clickGambarPesanan(pesanan.gambar!!, pesanan.jenis_plafon!!, it)
                 }
+                tvNama.setOnClickListener {
+                    onClick.clickKeterangan("Nama Lengkap", pesanan.nama_lengkap!!, it)
+                }
+                tvNomorHp.setOnClickListener {
+                    onClick.clickKeterangan("Nomor Hp", pesanan.nomor_hp!!, it)
+                }
                 tvAlamat.setOnClickListener {
-                    onClick.clickAlamat(pesanan.alamat!!, it)
+                    onClick.clickKeterangan("Alamat", pesanan.alamat!!, it)
+                }
+                tvDetailAlamat.setOnClickListener {
+                    onClick.clickKeterangan("Detail Alamat", pesanan.detail_alamat!!, it)
                 }
                 tvJenisPlafon.setOnClickListener {
                     onClick.clickJenisPlafon(pesanan.jenis_plafon!!, it)

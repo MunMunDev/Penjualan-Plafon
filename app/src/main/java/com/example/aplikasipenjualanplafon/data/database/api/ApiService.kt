@@ -1,6 +1,7 @@
 package com.example.aplikasipenjualanplafon.data.database.api
 
 import com.example.aplikasipenjualanplafon.data.model.AdminPesananDetailModel
+import com.example.aplikasipenjualanplafon.data.model.AlamatModel
 import com.example.aplikasipenjualanplafon.data.model.JenisPlafonModel
 import com.example.aplikasipenjualanplafon.data.model.ListKeranjangBelanjaModel
 import com.example.aplikasipenjualanplafon.data.model.ListPesananModel
@@ -36,6 +37,13 @@ interface ApiService {
         @Query("get_keranjang_belanja_user") get_keranjang_belanja_user: String,
         @Query("id_user") idUser: String
     ): ArrayList<PesananModel>
+
+
+    @GET("penjualan-plafon/api/get.php")
+    suspend fun getAlamatUser(
+        @Query("get_pilih_alamat") get_pilih_alamat: String,
+        @Query("id_user") idUser: String
+    ): ArrayList<AlamatModel>
 
     @GET("penjualan-plafon/api/get.php")
     suspend fun getPesanan(
@@ -106,12 +114,18 @@ interface ApiService {
         @Query("get_admin_riwayat_pesanan") get_admin_riwayat_pesanan: String
     ): ArrayList<ListPesananModel>
 
-
     @GET("penjualan-plafon/api/get.php")
     suspend fun getAdminRiwayatPesananDetail(
         @Query("get_admin_riwayat_pesanan_detail") get_admin_riwayat_pesanan_detail: String,
         @Query("id_user") id_user: String
     ): ArrayList<AdminPesananDetailModel>
+
+
+    @GET("penjualan-plafon/api/get.php")
+    suspend fun getAdminPrintLaporan(
+        @Query("get_admin_print_laporan") get_admin_print_laporan: String,
+        @Query("metode_pembayaran") metode_pembayaran: String,
+    ): ArrayList<RiwayatPesananValModel>
 
 
     // POST
@@ -173,6 +187,37 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("penjualan-plafon/api/post.php")
+    suspend fun postUpdateMainAlamat(
+        @Field("update_main_alamat") update_main_alamat: String,
+        @Field("id_alamat") id_alamat: String,
+        @Field("id_user") id_user: String,
+    ): ArrayList<ResponseModel>
+
+    @FormUrlEncoded
+    @POST("penjualan-plafon/api/post.php")
+    suspend fun postTambahAlamat(
+        @Field("tambah_pilih_alamat") tambah_pilih_alamat: String,
+        @Field("id_user") id_user: String,
+        @Field("nama_lengkap") nama_lengkap: String,
+        @Field("nomor_hp") nomor_hp: String,
+        @Field("alamat") alamat: String,
+        @Field("detail_alamat") detail_alamat: String,
+    ): ArrayList<ResponseModel>
+
+    @FormUrlEncoded
+    @POST("penjualan-plafon/api/post.php")
+    suspend fun postUpdateAlamat(
+        @Field("update_pilih_alamat") update_pilih_alamat: String,
+        @Field("id_alamat") id_alamat: String,
+        @Field("id_user") id_user: String,
+        @Field("nama_lengkap") nama_lengkap: String,
+        @Field("nomor_hp") nomor_hp: String,
+        @Field("alamat") alamat: String,
+        @Field("detail_alamat") detail_alamat: String,
+    ): ArrayList<ResponseModel>
+
+    @FormUrlEncoded
+    @POST("penjualan-plafon/api/post.php")
     suspend fun postPesan(
         @Field("post_pesan") postPesan:String,
         @Field("id_user") id_user: String,
@@ -182,11 +227,27 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("penjualan-plafon/api/post.php")
+    suspend fun postPesan(
+        @Field("post_pesan") postPesan:String,
+        @Field("id_user") id_user: String,
+        @Field("nama_lengkap") nama_lengkap: String,
+        @Field("nomor_hp") nomor_hp: String,
+        @Field("alamat") alamat: String,
+        @Field("detail_alamat") detail_alamat: String,
+        @Field("metode_pembayaran") metode_pembayaran: String
+    ): ArrayList<ResponseModel>
+
+    @FormUrlEncoded
+    @POST("penjualan-plafon/api/post.php")
     suspend fun postRegistrasiPembayaran(
         @Field("registrasi_pembayaran") registrasiPembayaran:String,
         @Field("id_pembayaran") id_pembayaran:String,
         @Field("id_user") id_user:String,
-        @Field("keterangan") keterangan:String
+        @Field("keterangan") keterangan:String,
+        @Field("nama_lengkap") nama_lengkap:String,
+        @Field("nomor_hp") nomor_hp:String,
+        @Field("alamat") alamat:String,
+        @Field("detail_alamat") detail_alamat:String,
     ): ArrayList<ResponseModel>
 
     // Post Jenis Plafon
@@ -445,7 +506,10 @@ interface ApiService {
         @Field("id_user") id_user: String,
         @Field("id_pemesanan") id_pemesanan: String,
         @Field("id_plafon") id_plafon: String,
+        @Field("nama_lengkap") nama_lengkap: String,
+        @Field("nomor_hp") nomor_hp: String,
         @Field("alamat") alamat: String,
+        @Field("detail_alamat") detail_alamat: String,
         @Field("jumlah") jumlah: String,
 //        @Field("harga") harga: String,
 //        @Field("total_harga") total_harga: String,
@@ -461,7 +525,10 @@ interface ApiService {
         @Field("id_user") id_user: String,
         @Field("id_pemesanan") id_pemesanan: String,
         @Field("id_plafon") id_plafon: String,
+        @Field("nama_lengkap") nama_lengkap: String,
+        @Field("nomor_hp") nomor_hp: String,
         @Field("alamat") alamat: String,
+        @Field("detail_alamat") detail_alamat: String,
         @Field("jumlah") jumlah: String,
         @Field("metode_pembayaran") metode_pembayaran: String
     ): ArrayList<ResponseModel>

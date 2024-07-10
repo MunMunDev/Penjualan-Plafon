@@ -209,8 +209,10 @@ class AdminDetailPesananActivity : AppCompatActivity() {
             llKeterangan.visibility = View.VISIBLE
 
             tvNama.text = valueData.nama
-            tvAlamat.text = valueData.alamat
             tvNomorHp.text = valueData.nomorHp
+            tvAlamat.text = valueData.alamat
+            tvDetailAlamat.text = valueData.detail_alamat
+
             var ket = ""
             if(valueData.ket=="0"){
                 ket = "Belum Dibayar"

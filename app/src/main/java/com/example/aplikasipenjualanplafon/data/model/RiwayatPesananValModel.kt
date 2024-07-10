@@ -15,8 +15,17 @@ class RiwayatPesananValModel (
     @SerializedName("id_pemesanan")
     val id_pemesanan: String? = null,
 
+    @SerializedName("nama_lengkap")
+    val nama_lengkap: String? = null,
+
+    @SerializedName("nomor_hp")
+    val nomor_hp: String? = null,
+
     @SerializedName("alamat")
     val alamat: String? = null,
+
+    @SerializedName("detail_alamat")
+    val detail_alamat: String? = null,
 
     @SerializedName("jenis_plafon")
     val jenis_plafon: String? = null,

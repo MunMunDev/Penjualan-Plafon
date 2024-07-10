@@ -1,6 +1,7 @@
 package com.example.aplikasipenjualanplafon.utils
 
 import android.view.View
+import com.example.aplikasipenjualanplafon.data.model.AlamatModel
 import com.example.aplikasipenjualanplafon.data.model.JenisPlafonModel
 import com.example.aplikasipenjualanplafon.data.model.PesananModel
 import com.example.aplikasipenjualanplafon.data.model.PlafonModel
@@ -32,6 +33,11 @@ interface OnClickItem {
         fun clickGambarPesanan(gambar: String, jenisPlafon:String, it: View)
     }
 
+    interface ClickPilihAlamat{
+        fun clickItemPilih(data: AlamatModel, it: View)
+        fun clickItemEdit(data:AlamatModel, it: View)
+    }
+
     interface ClickAdminDetailPesanan{
         fun clickItemSetting(pesanan: RiwayatPesananValModel, no:String, it: View)
         fun clickAlamatPesanan(alamat: String, it: View)
@@ -60,7 +66,7 @@ interface OnClickItem {
 
     interface ClickAdminRiwayatPesananDetail{
         fun clickItemSetting(pesanan: RiwayatPesananValModel, it: View)
-        fun clickAlamat(alamat: String, it: View)
+        fun clickKeterangan(keterangan: String, isi: String, it: View)
         fun clickJenisPlafon(jenisPlafon: String, it: View)
         fun clickGambarPesanan(gambar: String, jenisPlafon:String, it: View)
     }
