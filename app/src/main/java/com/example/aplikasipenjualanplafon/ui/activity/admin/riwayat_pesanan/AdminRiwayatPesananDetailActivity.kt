@@ -337,6 +337,10 @@ class AdminRiwayatPesananDetailActivity : AppCompatActivity() {
                 this@AdminRiwayatPesananDetailActivity, LinearLayoutManager.VERTICAL, false
             )
             rvPilihPlafon.adapter = AdminPilihPlafonAdapter(listPlafon, object : OnClickItem.ClickPlafon{
+                override fun clickItemDetail(plafon: PlafonModel, it: View) {
+
+                }
+
                 override fun clickItemPlafon(plafon: PlafonModel, it: View) {
                     idPlafon = plafon.id_plafon!!
                     namaPlafon = plafon.jenis_plafon!![0].jenis_plafon!!

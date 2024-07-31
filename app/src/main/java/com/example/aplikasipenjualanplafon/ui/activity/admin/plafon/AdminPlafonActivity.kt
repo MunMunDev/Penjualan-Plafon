@@ -241,6 +241,10 @@ class AdminPlafonActivity : AppCompatActivity() {
 
     private fun setAdapter(data: ArrayList<PlafonModel>) {
         adapter = AdminPlafonAdapter(data, object : OnClickItem.ClickPlafon{
+            override fun clickItemDetail(plafon: PlafonModel, it: View) {
+
+            }
+
             override fun clickItemPlafon(plafon: PlafonModel, it: View) {
                 val popupMenu = PopupMenu(this@AdminPlafonActivity, it)
                 popupMenu.inflate(R.menu.popup_edit_hapus)

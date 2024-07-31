@@ -26,4 +26,11 @@
     <color name="startGradient">#242729</color>
     <color name="centerGradient">#CFD9DF</color>
     <color name="endGradient">#698595</color>
+
+    <color name="circleColor">#9520B3</color>
+    <color name="circleColor1">#6B9D3A</color>
+    <color name="circleColor2">#F1407C</color>
+    <color name="circleColor3">#008ACC</color>
+    <color name="circleColor4">#789196</color>
+    <color name="circleColor5">#ED6D01</color>
 </resources>

@@ -21,6 +21,9 @@ class RiwayatPesananValModel (
     @SerializedName("nomor_hp")
     val nomor_hp: String? = null,
 
+    @SerializedName("kecamatan_kab_kota")
+    val kecamatan_kab_kota: String? = null,
+
     @SerializedName("alamat")
     val alamat: String? = null,
 

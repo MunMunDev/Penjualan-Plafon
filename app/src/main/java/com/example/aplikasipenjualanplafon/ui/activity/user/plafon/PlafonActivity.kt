@@ -1,6 +1,7 @@
 package com.example.aplikasipenjualanplafon.ui.activity.user.plafon
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ import com.example.aplikasipenjualanplafon.data.model.ResponseModel
 import com.example.aplikasipenjualanplafon.databinding.ActivityPlafonBinding
 import com.example.aplikasipenjualanplafon.databinding.AlertDialogPesanPlafonBinding
 import com.example.aplikasipenjualanplafon.databinding.AlertDialogShowImageBinding
+import com.example.aplikasipenjualanplafon.ui.activity.user.plafon.detatil.PlafonDetailActivity
 import com.example.aplikasipenjualanplafon.utils.KontrolNavigationDrawer
 import com.example.aplikasipenjualanplafon.utils.KonversiRupiah
 import com.example.aplikasipenjualanplafon.utils.LoadingAlertDialog
@@ -102,6 +104,21 @@ class PlafonActivity : AppCompatActivity() {
 
     private fun setAdapterPlafon(data: ArrayList<PlafonModel>){
         plafonAdapter = PlafonAdapter(data, object : OnClickItem.ClickPlafon{
+            override fun clickItemDetail(plafon: PlafonModel, it: View) {
+                val i = Intent(this@PlafonActivity, PlafonDetailActivity::class.java)
+                i.putExtra("idPlafon", plafon.id_plafon)
+                i.putExtra("jenisPlafon", plafon.jenis_plafon!![0].jenis_plafon)
+                i.putExtra("keterangan", plafon.keterangan)
+                i.putExtra("gambarPlafon", plafon.gambar)
+                i.putExtra("harga", plafon.harga)
+                i.putExtra("rekomendasi", plafon.rekomendasi)
+                i.putExtra("deskripsi", plafon.jenis_plafon[0].keunggulan)
+                i.putExtra("ukuran", plafon.ukuran)
+                i.putExtra("stok", plafon.stok)
+
+                startActivity(i)
+            }
+
             override fun clickItemPlafon(plafon: PlafonModel, it: View) {
                 Log.d("PlafonActivityTAG", "clickItemPlafon: ${plafon.harga}, ${plafon.jenis_plafon!![0].jenis_plafon}")
 

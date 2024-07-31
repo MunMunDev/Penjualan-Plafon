@@ -10,6 +10,7 @@ import com.example.aplikasipenjualanplafon.R
 import com.example.aplikasipenjualanplafon.data.model.PesananModel
 import com.example.aplikasipenjualanplafon.data.model.RiwayatPesananValModel
 import com.example.aplikasipenjualanplafon.databinding.ListPesananPlafonBinding
+import com.example.aplikasipenjualanplafon.databinding.ListPesananPlafonTestimoniBinding
 import com.example.aplikasipenjualanplafon.utils.Constant
 import com.example.aplikasipenjualanplafon.utils.KonversiRupiah
 import com.example.aplikasipenjualanplafon.utils.OnClickItem
@@ -19,10 +20,10 @@ class RiwayatPesananDetailAdapter(
     private val click: OnClickItem.ClickRiwayatPesananDetail
 ): RecyclerView.Adapter<RiwayatPesananDetailAdapter.ViewHolder>() {
     private val rupiah = KonversiRupiah()
-    class ViewHolder(val binding: ListPesananPlafonBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ListPesananPlafonTestimoniBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ListPesananPlafonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListPesananPlafonTestimoniBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -45,6 +46,9 @@ class RiwayatPesananDetailAdapter(
                     dataPesanan.jenis_plafon,
                     it
                 )
+            }
+            tvTestimoni.setOnClickListener {
+                click.clicTestimoni(dataPesanan.id_pemesanan!!, dataPesanan.id_plafon!!, dataPesanan.jenis_plafon!!, it)
             }
 
             Glide.with(holder.itemView)

@@ -36,8 +36,10 @@ class PilihAlamatAdapter(
         val data = list[position]
 
         holder.binding.apply {
+            val kecamatan = "Kacamatan ${data.kab_kota!!.listKecamatan!![0].kecamatan}, ${data.kab_kota.kab_kota}"
             tvNama.text = data.nama_lengkap
             tvNomorHp.text = data.nomor_hp
+            tvKecamatan.text = kecamatan
             tvAlamat.text = data.alamat
             tvAlamatDetail.text = data.detail_alamat
 

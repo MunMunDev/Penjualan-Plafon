@@ -1,5 +1,7 @@
 package com.example.aplikasipenjualanplafon.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 class PlafonModel (
@@ -8,6 +10,9 @@ class PlafonModel (
 
     @SerializedName("jenis_plafon")
     val jenis_plafon: ArrayList<JenisPlafonModel>? = null,
+
+    @SerializedName("keterangan")
+    val keterangan: String? = null,
 
     @SerializedName("gambar")
     val gambar: String? = null,
@@ -19,6 +24,8 @@ class PlafonModel (
     val ukuran: String? = null,
 
     @SerializedName("harga")
-    val harga: String? = null
+    val harga: String? = null,
 
+    @SerializedName("rekomendasi")
+    val rekomendasi: String? = null
 )

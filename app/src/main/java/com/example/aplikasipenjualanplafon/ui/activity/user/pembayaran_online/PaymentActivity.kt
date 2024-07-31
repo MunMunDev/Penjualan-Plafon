@@ -139,6 +139,7 @@ class PaymentActivity : AppCompatActivity() {
                 is UIState.Loading -> loading.alertDialogLoading(this@PaymentActivity)
                 is UIState.Failure -> setFailurePostPesan(result.message)
                 is UIState.Success -> setSuccessPostPesan(result.data)
+                else->{}
             }
         }
     }
@@ -177,6 +178,7 @@ class PaymentActivity : AppCompatActivity() {
                 is UIState.Loading-> loading.alertDialogLoading(this@PaymentActivity)
                 is UIState.Success-> setDataSuccessRegistrasiPembayaran(result.data)
                 is UIState.Failure-> setDataFailureRegistrasiPembayaran(result.message)
+                else->{}
             }
         }
     }
@@ -238,6 +240,7 @@ class PaymentActivity : AppCompatActivity() {
                 is UIState.Loading-> loading.alertDialogLoading(this@PaymentActivity)
                 is UIState.Success -> setDataSuccessPembayaran(result.data)
                 is UIState.Failure -> setDataFailurePembayaran(result.message)
+                else->{}
             }
         }
     }
@@ -318,8 +321,11 @@ class PaymentActivity : AppCompatActivity() {
                 tvAlamat.text = resources.getString(R.string.alamat)
             }
             if(alamatModel.id_alamat!!.isNotEmpty()){
+//                Log.d("DetailTAG", "setData: ${alamatModel.kab_kota!!.listKecamatan!![0].kecamatan}")
+                val kecamatan = "${alamatModel.kab_kota!!.listKecamatan!![0].kecamatan}, ${alamatModel.kab_kota!!.kab_kota}"
                 tvNama.text = alamatModel.nama_lengkap
                 tvNomorHp.text = alamatModel.nomor_hp
+                tvKecamatan.text = kecamatan
                 tvAlamat.text = alamatModel.alamat
                 tvAlamatDetail.text = alamatModel.detail_alamat
             } else{

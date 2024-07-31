@@ -6,6 +6,7 @@ import com.example.aplikasipenjualanplafon.data.model.JenisPlafonModel
 import com.example.aplikasipenjualanplafon.data.model.PesananModel
 import com.example.aplikasipenjualanplafon.data.model.PlafonModel
 import com.example.aplikasipenjualanplafon.data.model.RiwayatPesananValModel
+import com.example.aplikasipenjualanplafon.data.model.TestimoniModel
 import com.example.aplikasipenjualanplafon.data.model.UsersModel
 
 interface OnClickItem {
@@ -15,6 +16,7 @@ interface OnClickItem {
     }
 
     interface ClickPlafon{
+        fun clickItemDetail(plafon: PlafonModel, it: View)
         fun clickItemPlafon(plafon: PlafonModel, it: View)
         fun clickItemImage(jenisPlafon:String, image: String)
     }
@@ -31,6 +33,7 @@ interface OnClickItem {
     interface ClickRiwayatPesananDetail{
         fun clickItemPesanan(pesanan: RiwayatPesananValModel, it: View)
         fun clickGambarPesanan(gambar: String, jenisPlafon:String, it: View)
+        fun clicTestimoni(valueIdPemesanan:String, valueIdPlafon:String, valueJenisPlafon:String, it: View)
     }
 
     interface ClickPilihAlamat{

@@ -3,6 +3,7 @@ package com.example.aplikasipenjualanplafon.data.database.api
 import com.example.aplikasipenjualanplafon.data.model.AdminPesananDetailModel
 import com.example.aplikasipenjualanplafon.data.model.AlamatModel
 import com.example.aplikasipenjualanplafon.data.model.JenisPlafonModel
+import com.example.aplikasipenjualanplafon.data.model.KabKotaModel
 import com.example.aplikasipenjualanplafon.data.model.ListKeranjangBelanjaModel
 import com.example.aplikasipenjualanplafon.data.model.ListPesananModel
 import com.example.aplikasipenjualanplafon.data.model.PesananModel
@@ -10,6 +11,7 @@ import com.example.aplikasipenjualanplafon.data.model.PlafonModel
 import com.example.aplikasipenjualanplafon.data.model.ResponseModel
 import com.example.aplikasipenjualanplafon.data.model.RiwayatPesananHalModel
 import com.example.aplikasipenjualanplafon.data.model.RiwayatPesananValModel
+import com.example.aplikasipenjualanplafon.data.model.TestimoniModel
 import com.example.aplikasipenjualanplafon.data.model.UsersModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -74,6 +76,11 @@ interface ApiService {
     ): ArrayList<JenisPlafonModel>
 
     @GET("penjualan-plafon/api/get.php")
+    suspend fun getTestimoni(@Query("get_testimoni") get_testimoni: String,
+                             @Query("id_plafon") id_plafon: String
+    ): ArrayList<TestimoniModel>
+
+    @GET("penjualan-plafon/api/get.php")
     suspend fun getAllPlafon(@Query("get_all_plafon") getAllPlafon: String
     ): ArrayList<PlafonModel>
 
@@ -111,8 +118,17 @@ interface ApiService {
 
     @GET("penjualan-plafon/api/get.php")
     suspend fun getAdminRiwayatPesanan(
-        @Query("get_admin_riwayat_pesanan") get_admin_riwayat_pesanan: String
+        @Query("get_admin_riwayat_pesanan") get_admin_riwayat_pesanan: String,
+        @Query("id_user") id_user: String,
+
     ): ArrayList<ListPesananModel>
+
+    @GET("penjualan-plafon/api/get.php")
+    suspend fun getTestimoniRiwayatPesanan(
+        @Query("get_testimoni_riwayat_pesanan") get_testimoni_riwayat_pesanan: String,
+        @Query("id_pemesanan") id_pemesanan: String,
+        @Query("id_plafon") id_plafon: String
+    ): ArrayList<TestimoniModel>
 
     @GET("penjualan-plafon/api/get.php")
     suspend fun getAdminRiwayatPesananDetail(
@@ -120,12 +136,17 @@ interface ApiService {
         @Query("id_user") id_user: String
     ): ArrayList<AdminPesananDetailModel>
 
-
     @GET("penjualan-plafon/api/get.php")
     suspend fun getAdminPrintLaporan(
         @Query("get_admin_print_laporan") get_admin_print_laporan: String,
         @Query("metode_pembayaran") metode_pembayaran: String,
     ): ArrayList<RiwayatPesananValModel>
+
+    @GET("penjualan-plafon/api/get.php")
+    suspend fun getKabKota(
+        @Query("get_kab_kota") get_kab_kota: String,
+    ): ArrayList<KabKotaModel>
+
 
 
     // POST
@@ -200,6 +221,7 @@ interface ApiService {
         @Field("id_user") id_user: String,
         @Field("nama_lengkap") nama_lengkap: String,
         @Field("nomor_hp") nomor_hp: String,
+        @Field("id_kecamatan") id_kecamatan: String,
         @Field("alamat") alamat: String,
         @Field("detail_alamat") detail_alamat: String,
     ): ArrayList<ResponseModel>
@@ -212,6 +234,7 @@ interface ApiService {
         @Field("id_user") id_user: String,
         @Field("nama_lengkap") nama_lengkap: String,
         @Field("nomor_hp") nomor_hp: String,
+        @Field("id_kecamatan") id_kecamatan: String,
         @Field("alamat") alamat: String,
         @Field("detail_alamat") detail_alamat: String,
     ): ArrayList<ResponseModel>
@@ -538,6 +561,25 @@ interface ApiService {
     suspend fun postDeleteRiwayatPesananDetail(
         @Field("admin_delete_riwayat_pesanan") admin_delete_riwayat_pesanan:String,
         @Field("id_riwayat_pesanan") id_riwayat_pesanan: String
+    ): ArrayList<ResponseModel>
+
+    @FormUrlEncoded
+    @POST("penjualan-plafon/api/post.php")
+    suspend fun postTambahTestimoni(
+        @Field("tambah_testimoni") tambah_testimoni:String,
+        @Field("id_pemesanan") id_pemesanan: String,
+        @Field("id_plafon") id_plafon: String,
+        @Field("testimoni") testimoni: String,
+        @Field("bintang") bintang: String,
+    ): ArrayList<ResponseModel>
+
+    @FormUrlEncoded
+    @POST("penjualan-plafon/api/post.php")
+    suspend fun postUpdateTestimoni(
+        @Field("update_testimoni") update_testimoni:String,
+        @Field("id_testimoni") id_testimoni: String,
+        @Field("testimoni") testimoni: String,
+        @Field("bintang") bintang: String,
     ): ArrayList<ResponseModel>
 
 

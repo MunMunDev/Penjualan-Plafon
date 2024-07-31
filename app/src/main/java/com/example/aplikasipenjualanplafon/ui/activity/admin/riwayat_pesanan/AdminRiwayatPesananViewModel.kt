@@ -23,13 +23,26 @@ class AdminRiwayatPesananViewModel @Inject constructor(
     private var _postUpdateRiwayatPesanan = MutableLiveData<UIState<ArrayList<ResponseModel>>>()
     private var _postDeleteRiwayatPesanan = MutableLiveData<UIState<ArrayList<ResponseModel>>>()
 
+//    fun fetchRiwayatPesanan(){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            _pesanan.postValue(UIState.Loading)
+//            delay(1_000)
+//            try {
+//                val fetchRiwayatPesanan = api.getAdminRiwayatPesanan("")
+//                _pesanan.postValue(UIState.Success(fetchRiwayatPesanan))
+//            } catch (ex: Exception){
+//                _pesanan.postValue(UIState.Failure("Gagal : ${ex.message}"))
+//            }
+//        }
+//    }
+
     fun fetchRiwayatPesanan(){
         viewModelScope.launch(Dispatchers.IO) {
             _pesanan.postValue(UIState.Loading)
             delay(1_000)
             try {
-                val fetchRiwayatPesanan = api.getAdminRiwayatPesanan("")
-                _pesanan.postValue(UIState.Success(fetchRiwayatPesanan))
+                val fetchPesanan = api.getAdminRiwayatPesanan("", "2")
+                _pesanan.postValue(UIState.Success(fetchPesanan))
             } catch (ex: Exception){
                 _pesanan.postValue(UIState.Failure("Gagal : ${ex.message}"))
             }

@@ -3,6 +3,7 @@ package com.example.aplikasipenjualanplafon.ui.activity.user.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -226,6 +227,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setFailureFetchPesanan(message: String) {
+        Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+        Log.d("DetailTAG", "setFailureFetchPesanan: $message")
+        setNoHaveData()
+        loading.alertDialogCancel()
+    }
+
     private fun setSuccessFetchPesanan(data: ArrayList<PesananModel>) {
         if(data.isNotEmpty()){
             setAdapter(data)
@@ -438,12 +446,6 @@ class MainActivity : AppCompatActivity() {
             .error(R.drawable.gambar_not_have_image)
             .into(view.ivShowImage) // imageView mana yang akan diterapkan
 
-    }
-
-    private fun setFailureFetchPesanan(message: String) {
-        Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
-        setNoHaveData()
-        loading.alertDialogCancel()
     }
 
     private fun setNoHaveData(){

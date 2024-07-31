@@ -84,6 +84,15 @@ class AdminKeranjangBelanjaDetailActivity : AppCompatActivity() {
                 setShowImage(gambar, jenisPlafon)
             }
 
+            override fun clicTestimoni(
+                valueIdPemesanan: String,
+                valueIdPlafon: String,
+                valueJenisPlafon: String,
+                it: View
+            ) {
+                Toast.makeText(this@AdminKeranjangBelanjaDetailActivity, "Maaf metode ini hanya bisa di riwayat pesanan", Toast.LENGTH_SHORT).show()
+            }
+
         })
         binding.apply {
             rvDetailRiwayatPesanan.layoutManager = LinearLayoutManager(this@AdminKeranjangBelanjaDetailActivity, LinearLayoutManager.VERTICAL, false)

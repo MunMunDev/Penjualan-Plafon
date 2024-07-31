@@ -23,7 +23,6 @@ class ListPesananModel (
     val waktu: String? = null,
 
     @SerializedName("ket")
-    val ket: String? = null,
-
+    val ket: String? = null
 
 )

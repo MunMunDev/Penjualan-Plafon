@@ -4,6 +4,7 @@ import com.example.aplikasipenjualanplafon.data.database.api.ApiService
 import com.example.aplikasipenjualanplafon.utils.Constant
 import com.example.aplikasipenjualanplafon.utils.KataAcak
 import com.example.aplikasipenjualanplafon.utils.KonversiRupiah
+import com.example.aplikasipenjualanplafon.utils.KotaKabProvIndonesia
 import com.example.aplikasipenjualanplafon.utils.LoadingAlertDialog
 import com.example.aplikasipenjualanplafon.utils.TanggalDanWaktu
 import com.google.gson.GsonBuilder
@@ -27,8 +28,8 @@ object AppModule {
         .baseUrl(Constant.BASE_URL)
         .client(
             OkHttpClient().newBuilder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
         )
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
@@ -47,4 +48,8 @@ object AppModule {
     @Provides
     @Singleton
     fun rupiah(): KonversiRupiah = KonversiRupiah()
+
+    @Provides
+    @Singleton
+    fun kotaKab(): KotaKabProvIndonesia = KotaKabProvIndonesia()
 }

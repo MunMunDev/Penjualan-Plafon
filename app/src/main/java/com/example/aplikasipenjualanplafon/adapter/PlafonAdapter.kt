@@ -36,6 +36,11 @@ class PlafonAdapter(
             tvStok.text = dataPlafon.stok
             tvUkuran.text = dataPlafon.ukuran
             tvHarga.text = rupiah.rupiah(dataPlafon.harga!!.trim().toLong())
+
+            clDetailPlafon.setOnClickListener {
+                click.clickItemDetail(dataPlafon, it)
+            }
+
             btnPesan.setOnClickListener {
                 click.clickItemPlafon(dataPlafon, it)
             }

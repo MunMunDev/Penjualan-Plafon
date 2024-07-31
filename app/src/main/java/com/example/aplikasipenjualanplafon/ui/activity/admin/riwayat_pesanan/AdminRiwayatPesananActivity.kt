@@ -3,6 +3,7 @@ package com.example.aplikasipenjualanplafon.ui.activity.admin.riwayat_pesanan
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -138,6 +139,7 @@ class AdminRiwayatPesananActivity : AppCompatActivity() {
 
     private fun setFailureFetchPesanan(message: String) {
         Toast.makeText(this@AdminRiwayatPesananActivity, message, Toast.LENGTH_SHORT).show()
+        Log.d("DetailTAG", ": $message ")
         loading.alertDialogCancel()
     }
 

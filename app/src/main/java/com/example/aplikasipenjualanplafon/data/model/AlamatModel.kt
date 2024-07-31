@@ -23,4 +23,7 @@ class AlamatModel(
 
     @SerializedName("main")
     val main: String? = null,
+
+    @SerializedName("kab_kota")
+    val kab_kota: KabKotaModel? = null,
 )
