@@ -63,6 +63,7 @@ class PaymentActivity : AppCompatActivity() {
     private var idUser = ""
     private var namaLengkap = ""
     private var nomorHp = ""
+    private var kecamatanKabKota = ""
     private var alamat = ""
     private var detailAlamat = ""
     private var jenisPembayaran = ""
@@ -101,6 +102,7 @@ class PaymentActivity : AppCompatActivity() {
     private fun setButton() {
         binding.apply {
             btnBack.setOnClickListener {
+                startActivity(Intent(this@PaymentActivity, MainActivity::class.java))
                 finish()
             }
             btnBayar.setOnClickListener {
@@ -109,7 +111,7 @@ class PaymentActivity : AppCompatActivity() {
                 } else{
                     if(numberPosition == 0){
 //                        fetchDataRegistrasiPembayaran(uuid, idUser)
-                        fetchDataRegistrasiPembayaran(acak, idUser, namaLengkap, nomorHp, alamat, detailAlamat)
+                        fetchDataRegistrasiPembayaran(acak, idUser, namaLengkap, nomorHp, kecamatanKabKota, alamat, detailAlamat)
                     } else{
                         postTambahPesananDitempat(idUser, namaLengkap, nomorHp, alamat, detailAlamat, jenisPembayaran)
                     }
@@ -167,9 +169,9 @@ class PaymentActivity : AppCompatActivity() {
     private fun fetchDataRegistrasiPembayaran(
         idPembayaran: String, idUser: String,
         namaLengkap: String, nomorHp: String,
-        alamat: String, detailAlamat: String
+        kecamatanKabKota: String, alamat: String, detailAlamat: String
     ) {
-        viewModel.postRegistrasiPembayaran(idPembayaran, idUser, "Pending", namaLengkap, nomorHp, alamat, detailAlamat)
+        viewModel.postRegistrasiPembayaran(idPembayaran, idUser, "Pending", namaLengkap, nomorHp, kecamatanKabKota, alamat, detailAlamat)
     }
 
     private fun getDataRegistrasiPembayaran() {
@@ -287,7 +289,7 @@ class PaymentActivity : AppCompatActivity() {
             Log.d("PaymentActivityTAG", "setDataSuccessPembayaran: $totalBiaya")
 
             initTransactionDetails = SnapTransactionDetail(
-                uuid,
+                acak,
                 totalBiaya
             )
 
@@ -297,7 +299,7 @@ class PaymentActivity : AppCompatActivity() {
                 tvTotalTagihan.text = rupiah.rupiah(total.toLong())
             }
         } else{
-            Toast.makeText(this@PaymentActivity, "Terima Kasih Telah Membayar", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@PaymentActivity, "Terima Kasih Telah Memesan", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this@PaymentActivity, MainActivity::class.java))
             finish()
         }
@@ -323,6 +325,7 @@ class PaymentActivity : AppCompatActivity() {
             if(alamatModel.id_alamat!!.isNotEmpty()){
 //                Log.d("DetailTAG", "setData: ${alamatModel.kab_kota!!.listKecamatan!![0].kecamatan}")
                 val kecamatan = "${alamatModel.kab_kota!!.listKecamatan!![0].kecamatan}, ${alamatModel.kab_kota!!.kab_kota}"
+                kecamatanKabKota = kecamatan
                 tvNama.text = alamatModel.nama_lengkap
                 tvNomorHp.text = alamatModel.nomor_hp
                 tvKecamatan.text = kecamatan
@@ -419,9 +422,55 @@ class PaymentActivity : AppCompatActivity() {
                 result.data?.let {
                     val transactionResult = it.getParcelableExtra<com.midtrans.sdk.uikit.api.model.TransactionResult>(
                         UiKitConstants.KEY_TRANSACTION_RESULT)
+
+
 //                    Toast.makeText(this, "${transactionResult?.transactionId}", Toast.LENGTH_LONG).show()
                 }
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK) {
+            val transactionResult = data?.getParcelableExtra<com.midtrans.sdk.uikit.api.model.TransactionResult>(UiKitConstants.KEY_TRANSACTION_RESULT)
+            if (transactionResult != null) {
+                loading.alertDialogLoading(this@PaymentActivity)
+                when (transactionResult.status) {
+                    UiKitConstants.STATUS_SUCCESS -> {
+//                        Toast.makeText(this, "Transaction Finished. ID: " + transactionResult.transactionId, Toast.LENGTH_LONG).show()
+                        fetchDataPembayaran(idUser)
+                    }
+                    UiKitConstants.STATUS_PENDING -> {
+//                        Toast.makeText(this, "Transaction Pending. ID: " + transactionResult.transactionId, Toast.LENGTH_LONG).show()
+                        fetchDataPembayaran(idUser)
+                    }
+                    UiKitConstants.STATUS_FAILED -> {
+//                        Toast.makeText(this, "Transaction Failed. ID: " + transactionResult.transactionId, Toast.LENGTH_LONG).show()
+                        fetchDataPembayaran(idUser)
+                    }
+                    UiKitConstants.STATUS_CANCELED -> {
+//                        Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_LONG).show()
+                        fetchDataPembayaran(idUser)
+                    }
+                    UiKitConstants.STATUS_INVALID -> {
+//                        Toast.makeText(this, "Transaction Invalid. ID: " + transactionResult.transactionId, Toast.LENGTH_LONG).show()
+                        fetchDataPembayaran(idUser)
+                    }
+                    else -> {
+//                        Toast.makeText(this, "Transaction ID: " + transactionResult.transactionId + ". Message: " + transactionResult.status, Toast.LENGTH_LONG).show()
+                        fetchDataPembayaran(idUser)
+                    }
+                }
+            } else {
+                Toast.makeText(this@PaymentActivity, "Gagal Tranksaksi", Toast.LENGTH_LONG).show()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@PaymentActivity, MainActivity::class.java))
+        finish()
     }
 }

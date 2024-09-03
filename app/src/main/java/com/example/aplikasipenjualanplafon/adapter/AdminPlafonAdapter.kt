@@ -37,32 +37,44 @@ class AdminPlafonAdapter(
             if(position==0){
                 tvNo.text = "NO"
                 tvJenisPlafon.text = "Jenis Plafon"
-                tvHarga.text = "Harga Permeter"
+                tvKeterangan.text = "Keterangan"
+                tvStok.text = "Stok"
+                tvHarga.text = "Harga"
                 tvSetting.text = ""
 
                 tvNo.setBackgroundResource(R.drawable.bg_table_title)
                 tvJenisPlafon.setBackgroundResource(R.drawable.bg_table_title)
+                tvKeterangan.setBackgroundResource(R.drawable.bg_table_title)
+                tvStok.setBackgroundResource(R.drawable.bg_table_title)
                 tvHarga.setBackgroundResource(R.drawable.bg_table_title)
                 ivGambarPlafon.setBackgroundResource(R.drawable.bg_table_title)
                 tvSetting.setBackgroundResource(R.drawable.bg_table_title)
 
                 tvNo.setTextColor(Color.parseColor("#ffffff"))
                 tvJenisPlafon.setTextColor(Color.parseColor("#ffffff"))
+                tvKeterangan.setTextColor(Color.parseColor("#ffffff"))
+                tvStok.setTextColor(Color.parseColor("#ffffff"))
                 tvHarga.setTextColor(Color.parseColor("#ffffff"))
                 tvSetting.setTextColor(Color.parseColor("#ffffff"))
 
                 tvNo.setTypeface(null, Typeface.BOLD)
                 tvJenisPlafon.setTypeface(null, Typeface.BOLD)
+                tvKeterangan.setTypeface(null, Typeface.BOLD)
+                tvStok.setTypeface(null, Typeface.BOLD)
                 tvHarga.setTypeface(null, Typeface.BOLD)
                 tvSetting.setTypeface(null, Typeface.BOLD)
             }
             else{
                 val plafon = listPlafon[(position-1)]
                 val jenisPlafon = plafon.jenis_plafon!![0].jenis_plafon!!
+                val keterangan = plafon.keterangan
+                val stok = plafon.stok
                 val gambar = plafon.gambar!!
 
                 tvNo.text = "$position"
                 tvJenisPlafon.text = jenisPlafon
+                tvKeterangan.text = keterangan
+                tvStok.text = stok
                 tvHarga.text = konversiRupiah.rupiah(plafon.harga!!.toLong())
                 Glide.with(holder.itemView)
                     .load("${Constant.BASE_URL}${Constant.LOCATION_GAMBAR}${gambar}")
@@ -72,20 +84,29 @@ class AdminPlafonAdapter(
 
                 tvNo.setBackgroundResource(R.drawable.bg_table)
                 tvJenisPlafon.setBackgroundResource(R.drawable.bg_table)
+                tvKeterangan.setBackgroundResource(R.drawable.bg_table)
+                tvStok.setBackgroundResource(R.drawable.bg_table)
                 tvHarga.setBackgroundResource(R.drawable.bg_table)
                 ivGambarPlafon.setBackgroundResource(R.drawable.bg_table)
                 tvSetting.setBackgroundResource(R.drawable.bg_table)
 
                 tvNo.setTextColor(Color.parseColor("#000000"))
                 tvJenisPlafon.setTextColor(Color.parseColor("#000000"))
+                tvKeterangan.setTextColor(Color.parseColor("#000000"))
+                tvStok.setTextColor(Color.parseColor("#000000"))
                 tvHarga.setTextColor(Color.parseColor("#000000"))
                 tvSetting.setTextColor(Color.parseColor("#000000"))
 
                 tvNo.setTypeface(null, Typeface.NORMAL)
                 tvJenisPlafon.setTypeface(null, Typeface.NORMAL)
+                tvKeterangan.setTypeface(null, Typeface.NORMAL)
+                tvStok.setTypeface(null, Typeface.NORMAL)
                 tvHarga.setTypeface(null, Typeface.NORMAL)
                 tvSetting.setTypeface(null, Typeface.NORMAL)
 
+                tvKeterangan.setOnClickListener {
+                    onClick.clickItemKeterangan(plafon, it)
+                }
                 tvSetting.setOnClickListener {
                     onClick.clickItemPlafon(plafon, it)
                 }

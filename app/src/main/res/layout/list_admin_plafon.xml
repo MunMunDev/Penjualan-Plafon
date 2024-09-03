@@ -29,6 +29,30 @@
         android:background="@drawable/bg_table"/>
 
     <TextView
+        android:id="@+id/tvKeterangan"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:text="Keterangan"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:background="@drawable/bg_table"
+        android:lines="1"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/tvStok"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:text="Stok"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:background="@drawable/bg_table"/>
+
+    <TextView
         android:id="@+id/tvHarga"
         android:layout_width="120dp"
         android:layout_height="60dp"

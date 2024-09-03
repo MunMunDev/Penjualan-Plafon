@@ -18,6 +18,7 @@ interface OnClickItem {
     interface ClickPlafon{
         fun clickItemDetail(plafon: PlafonModel, it: View)
         fun clickItemPlafon(plafon: PlafonModel, it: View)
+        fun clickItemKeterangan(plafon: PlafonModel, it: View)
         fun clickItemImage(jenisPlafon:String, image: String)
     }
 
@@ -64,7 +65,7 @@ interface OnClickItem {
 
     interface ClickAdminRiwayatPesanan{
         fun clickItemSetting(idPemesanan: String, nama: String, it: View)
-        fun clickPesanan(idUser: String, nama: String, it: View)
+        fun clickPesanan(idUser: String, nama: String, jumlahPesanan:Int, it: View)
     }
 
     interface ClickAdminRiwayatPesananDetail{

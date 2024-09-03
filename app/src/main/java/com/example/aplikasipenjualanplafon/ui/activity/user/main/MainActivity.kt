@@ -91,6 +91,7 @@ class MainActivity : AppCompatActivity() {
                 val i = Intent(this@MainActivity, PaymentActivity::class.java)
                 i.putParcelableArrayListExtra("pesanan", listPesanan)
                 startActivity(i)
+                finish()
             }
         }
     }
@@ -241,7 +242,7 @@ class MainActivity : AppCompatActivity() {
 
             listPesanan = data
         } else{
-            Toast.makeText(this@MainActivity, "Tidak ada data", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this@MainActivity, "Tidak ada data", Toast.LENGTH_SHORT).show()
             setNoHaveData()
         }
         loading.alertDialogCancel()

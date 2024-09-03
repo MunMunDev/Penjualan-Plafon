@@ -52,14 +52,14 @@ class PaymentViewModel @Inject constructor(
 
     fun postRegistrasiPembayaran(
         id_pembayaran: String, idUser: String, keterangan:String, namaLengkap: String,
-        nomorHp: String, alamat:String, detailAlamat:String
+        nomorHp: String, kecamatanKabKota:String, alamat:String, detailAlamat:String
     ){
         viewModelScope.launch(Dispatchers.IO){
             _responseRegistrasiPembayaran.postValue(UIState.Loading)
             delay(1_000)
             try {
                 val dataRegistrasiPembayaran = api.postRegistrasiPembayaran(
-                    "", id_pembayaran, idUser, keterangan, namaLengkap, nomorHp, alamat, detailAlamat
+                    "", id_pembayaran, idUser, keterangan, namaLengkap, nomorHp, kecamatanKabKota, alamat, detailAlamat
                 )
                 _responseRegistrasiPembayaran.postValue(UIState.Success(dataRegistrasiPembayaran))
             } catch (ex: Exception){

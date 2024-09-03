@@ -53,7 +53,7 @@ class AdminRiwayatPesananDetailViewModel @Inject constructor(
 
     fun postTambahRiwayatPesananDetail(
         idUser:String, idPemesanan:String, idPlafon:String, nama_lengkap:String, nomor_hp:String,
-        alamat:String, detail_alamat:String, jumlah:String, metodePembayaran:String
+        kecamatan:String, alamat:String, detail_alamat:String, jumlah:String, metodePembayaran:String
     ){
         viewModelScope.launch(Dispatchers.IO) {
             _postTambahRiwayatPesananDetail.postValue(UIState.Loading)
@@ -65,7 +65,7 @@ class AdminRiwayatPesananDetailViewModel @Inject constructor(
 //                )
                 val fetchRiwayatPesanan = api.postTambahRiwayatPesananDetail(
                     "", idUser, idPemesanan, idPlafon, nama_lengkap, nomor_hp,
-                    alamat, detail_alamat, jumlah, metodePembayaran
+                    kecamatan, alamat, detail_alamat, jumlah, metodePembayaran
                 )
                 _postTambahRiwayatPesananDetail.postValue(UIState.Success(fetchRiwayatPesanan))
             } catch (ex: Exception){
@@ -76,7 +76,7 @@ class AdminRiwayatPesananDetailViewModel @Inject constructor(
 
     fun postUpdateRiwayatPesanan(
         idRiwayatPesanan:String, idUser:String, idPemesanan:String, idPlafon:String, namaLengkap:String,
-        nomorHp:String, alamat:String, detailAlamat:String, jumlah:String, metodePembayaran:String
+        nomorHp:String, kecamatan:String, alamat:String, detailAlamat:String, jumlah:String, metodePembayaran:String
     ){
         viewModelScope.launch(Dispatchers.IO) {
             _postUpdateRiwayatPesananDetail.postValue(UIState.Loading)
@@ -84,7 +84,7 @@ class AdminRiwayatPesananDetailViewModel @Inject constructor(
             try {
                 val fetchRiwayatPesanan = api.postUpdateRiwayatPesananDetail(
                     "", idRiwayatPesanan, idUser, idPemesanan,
-                    idPlafon, namaLengkap, nomorHp, alamat, detailAlamat, jumlah, metodePembayaran
+                    idPlafon, namaLengkap, nomorHp, kecamatan, alamat, detailAlamat, jumlah, metodePembayaran
                 )
                 _postUpdateRiwayatPesananDetail.postValue(UIState.Success(fetchRiwayatPesanan))
             } catch (ex: Exception){

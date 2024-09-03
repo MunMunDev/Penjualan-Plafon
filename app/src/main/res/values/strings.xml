@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Aplikasi Penjualan Plafon</string>
+    <string name="app_name">Plafon PVC</string>
     <string-array name="metode_pembayaran">
         <item>Online</item>
         <item>Ditempat</item>

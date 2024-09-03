@@ -41,6 +41,7 @@ class AdminRiwayatPesananDetailAdapter(
                 tvIdPemesanan.text = "ID"
                 tvNama.text = "Nama"
                 tvNomorHp.text = "Nomor Hp"
+                tvKecamatan.text = "Kecamatan"
                 tvAlamat.text = "Alamat"
                 tvDetailAlamat.text = "Detail Alamat"
                 tvJenisPlafon.text = "Jenis Plafon"
@@ -56,6 +57,7 @@ class AdminRiwayatPesananDetailAdapter(
                 tvIdPemesanan.setBackgroundResource(R.drawable.bg_table_title)
                 tvNama.setBackgroundResource(R.drawable.bg_table_title)
                 tvNomorHp.setBackgroundResource(R.drawable.bg_table_title)
+                tvKecamatan.setBackgroundResource(R.drawable.bg_table_title)
                 tvAlamat.setBackgroundResource(R.drawable.bg_table_title)
                 tvDetailAlamat.setBackgroundResource(R.drawable.bg_table_title)
                 tvJenisPlafon.setBackgroundResource(R.drawable.bg_table_title)
@@ -73,6 +75,7 @@ class AdminRiwayatPesananDetailAdapter(
                 tvIdPemesanan.setTextColor(Color.parseColor("#ffffff"))
                 tvNama.setTextColor(Color.parseColor("#ffffff"))
                 tvNomorHp.setTextColor(Color.parseColor("#ffffff"))
+                tvKecamatan.setTextColor(Color.parseColor("#ffffff"))
                 tvAlamat.setTextColor(Color.parseColor("#ffffff"))
                 tvDetailAlamat.setTextColor(Color.parseColor("#ffffff"))
                 tvJenisPlafon.setTextColor(Color.parseColor("#ffffff"))
@@ -87,6 +90,7 @@ class AdminRiwayatPesananDetailAdapter(
 
                 tvNo.setTypeface(null, Typeface.BOLD)
                 tvIdPemesanan.setTypeface(null, Typeface.BOLD)
+                tvKecamatan.setTypeface(null, Typeface.BOLD)
                 tvAlamat.setTypeface(null, Typeface.BOLD)
                 tvJenisPlafon.setTypeface(null, Typeface.BOLD)
                 tvJumlah.setTypeface(null, Typeface.BOLD)
@@ -105,6 +109,7 @@ class AdminRiwayatPesananDetailAdapter(
                 tvIdPemesanan.text = pesanan.id_pemesanan
                 tvNama.text = pesanan.nama_lengkap
                 tvNomorHp.text = pesanan.nomor_hp
+                tvKecamatan.text = pesanan.kecamatan_kab_kota
                 tvAlamat.text = pesanan.alamat
                 tvDetailAlamat.text = pesanan.detail_alamat
                 tvJenisPlafon.text = pesanan.jenis_plafon
@@ -120,6 +125,7 @@ class AdminRiwayatPesananDetailAdapter(
                 tvIdPemesanan.setBackgroundResource(R.drawable.bg_table)
                 tvNama.setBackgroundResource(R.drawable.bg_table)
                 tvNomorHp.setBackgroundResource(R.drawable.bg_table)
+                tvKecamatan.setBackgroundResource(R.drawable.bg_table)
                 tvAlamat.setBackgroundResource(R.drawable.bg_table)
                 tvDetailAlamat.setBackgroundResource(R.drawable.bg_table)
                 tvJenisPlafon.setBackgroundResource(R.drawable.bg_table)
@@ -138,6 +144,7 @@ class AdminRiwayatPesananDetailAdapter(
                 tvIdPemesanan.setTextColor(Color.parseColor("#000000"))
                 tvNama.setTextColor(Color.parseColor("#000000"))
                 tvNomorHp.setTextColor(Color.parseColor("#000000"))
+                tvKecamatan.setTextColor(Color.parseColor("#000000"))
                 tvAlamat.setTextColor(Color.parseColor("#000000"))
                 tvDetailAlamat.setTextColor(Color.parseColor("#000000"))
                 tvJenisPlafon.setTextColor(Color.parseColor("#000000"))
@@ -153,6 +160,7 @@ class AdminRiwayatPesananDetailAdapter(
                 tvIdPemesanan.setTypeface(null, Typeface.NORMAL)
                 tvNama.setTypeface(null, Typeface.NORMAL)
                 tvNomorHp.setTypeface(null, Typeface.NORMAL)
+                tvKecamatan.setTypeface(null, Typeface.NORMAL)
                 tvAlamat.setTypeface(null, Typeface.NORMAL)
                 tvDetailAlamat.setTypeface(null, Typeface.NORMAL)
                 tvJenisPlafon.setTypeface(null, Typeface.NORMAL)
@@ -178,6 +186,9 @@ class AdminRiwayatPesananDetailAdapter(
                 }
                 tvNomorHp.setOnClickListener {
                     onClick.clickKeterangan("Nomor Hp", pesanan.nomor_hp!!, it)
+                }
+                tvKecamatan.setOnClickListener {
+                    onClick.clickKeterangan("Kecamatan, Kab/Kota", "Kecamatan ${pesanan.kecamatan_kab_kota}", it)
                 }
                 tvAlamat.setOnClickListener {
                     onClick.clickKeterangan("Alamat", pesanan.alamat!!, it)

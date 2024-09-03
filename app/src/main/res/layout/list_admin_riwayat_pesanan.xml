@@ -57,6 +57,19 @@
         android:background="@drawable/bg_table"/>
 
     <TextView
+        android:id="@+id/tvKecamatan"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:text="Kecamatan"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:lines="1"
+        android:ellipsize="end"
+        android:background="@drawable/bg_table"/>
+
+    <TextView
         android:id="@+id/tvAlamat"
         android:layout_width="180dp"
         android:layout_height="60dp"

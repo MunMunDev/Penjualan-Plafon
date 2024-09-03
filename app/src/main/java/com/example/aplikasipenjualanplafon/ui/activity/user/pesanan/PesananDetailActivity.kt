@@ -2,6 +2,7 @@ package com.example.aplikasipenjualanplafon.ui.activity.user.pesanan
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -67,6 +68,8 @@ class PesananDetailActivity : AppCompatActivity() {
     private fun setSuccessFetchRiwayatPembayaran(data: ArrayList<RiwayatPesananValModel>) {
         if(data.isNotEmpty()){
             setAdapter(data)
+            setDataAlamat(data)
+            Log.d("DetailTAG", "set init: ${data[0].ket}")
             if(data[0].ket == "0"){
                 binding.tvKeterangan.text = "Belum Bayar"
             } else{
@@ -74,6 +77,16 @@ class PesananDetailActivity : AppCompatActivity() {
             }
         } else{
             Toast.makeText(this@PesananDetailActivity, "Tidak ada data Jenis Plafon", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setDataAlamat(data: ArrayList<RiwayatPesananValModel>) {
+        binding.apply {
+            tvNama.text = data[0].nama_lengkap
+            tvNomorHp.text = data[0].nomor_hp
+            tvKecamatan.text = "Kecamatan ${data[0].kecamatan_kab_kota}"
+            tvAlamat.text = data[0].alamat
+            tvAlamatDetail.text = data[0].detail_alamat
         }
     }
 

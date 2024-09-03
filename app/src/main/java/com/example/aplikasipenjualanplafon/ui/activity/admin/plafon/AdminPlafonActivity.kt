@@ -30,6 +30,7 @@ import com.example.aplikasipenjualanplafon.data.model.JenisPlafonModel
 import com.example.aplikasipenjualanplafon.data.model.PlafonModel
 import com.example.aplikasipenjualanplafon.data.model.ResponseModel
 import com.example.aplikasipenjualanplafon.databinding.ActivityAdminPlafonBinding
+import com.example.aplikasipenjualanplafon.databinding.AlertDialogKeteranganBinding
 import com.example.aplikasipenjualanplafon.databinding.AlertDialogKonfirmasiBinding
 import com.example.aplikasipenjualanplafon.databinding.AlertDialogPlafonBinding
 import com.example.aplikasipenjualanplafon.databinding.AlertDialogShowImageBinding
@@ -121,6 +122,14 @@ class AdminPlafonActivity : AppCompatActivity() {
             }
             btnSimpan.setOnClickListener {
                 var cek = false
+                if(etKeterangan.text.toString().trim().isEmpty()){
+                    etKeterangan.error = "Tidak Boleh Kosong"
+                    cek = true
+                }
+                if(etStok.text.toString().trim().isEmpty()){
+                    etStok.error = "Tidak Boleh Kosong"
+                    cek = true
+                }
                 if(etHarga.text.toString().trim().isEmpty()){
                     etHarga.error = "Tidak Boleh Kosong"
                     cek = true
@@ -131,7 +140,10 @@ class AdminPlafonActivity : AppCompatActivity() {
                 }
 
                 if(!cek){
-                    postAddPlafon(idJenisPlafon!!, fileImage!!, etHarga.text.toString().trim())
+                    val keterangan = etKeterangan.text.toString().trim()
+                    val stok = etStok.text.toString().trim()
+                    val harga = etHarga.text.toString().trim()
+                    postAddPlafon(idJenisPlafon!!, keterangan, fileImage!!, stok, harga)
                     dialogInputan.dismiss()
                 }
             }
@@ -145,11 +157,13 @@ class AdminPlafonActivity : AppCompatActivity() {
         }
     }
 
-    private fun postAddPlafon(idJenisPlafon: String, image: MultipartBody.Part, harga: String) {
+    private fun postAddPlafon(idJenisPlafon: String, keterangan: String, image: MultipartBody.Part, stok: String, harga: String) {
         viewModel.postTambahPlafon(
             convertStringToMultipartBody(""),
             convertStringToMultipartBody(idJenisPlafon),
+            convertStringToMultipartBody(keterangan),
             fileImage!!,
+            convertStringToMultipartBody(stok),
             convertStringToMultipartBody(harga)
         )
     }
@@ -268,6 +282,10 @@ class AdminPlafonActivity : AppCompatActivity() {
                 popupMenu.show()
             }
 
+            override fun clickItemKeterangan(plafon: PlafonModel, it: View) {
+                showKeterangan(plafon)
+            }
+
             override fun clickItemImage(jenisPlafon: String, image: String) {
                 setShowImage(image, jenisPlafon)
             }
@@ -277,6 +295,25 @@ class AdminPlafonActivity : AppCompatActivity() {
         binding.apply {
             rvPlafon.layoutManager = LinearLayoutManager(this@AdminPlafonActivity, LinearLayoutManager.VERTICAL, false)
             rvPlafon.adapter = adapter
+        }
+    }
+
+    private fun showKeterangan(plafon: PlafonModel) {
+        val view = AlertDialogKeteranganBinding.inflate(layoutInflater)
+
+        val alertDialog = AlertDialog.Builder(this@AdminPlafonActivity)
+        alertDialog.setView(view.root)
+            .setCancelable(true)
+        val dialogInputan = alertDialog.create()
+        dialogInputan.show()
+
+        view.apply {
+            tvTitleKeterangan.text = plafon.jenis_plafon!![0].jenis_plafon
+            tvBodyKeterangan.text = plafon.keterangan
+
+            btnClose.setOnClickListener {
+                dialogInputan.dismiss()
+            }
         }
     }
 
@@ -304,22 +341,35 @@ class AdminPlafonActivity : AppCompatActivity() {
             }
 
             var idPlafon = plafon.id_plafon!!
-            var harga = plafon.harga!!
 
+            etKeterangan.setText(plafon.keterangan)
+            etStok.setText(plafon.stok)
             etHarga.setText(plafon.harga)
 
             btnSimpan.setOnClickListener {
                 var cek = false
+                if(etKeterangan.text.toString().trim().isEmpty()){
+                    etKeterangan.error = "Tidak Boleh Kosong"
+                    cek = true
+                }
+                if(etStok.text.toString().trim().isEmpty()){
+                    etStok.error = "Tidak Boleh Kosong"
+                    cek = true
+                }
                 if(etHarga.text.toString().trim().isEmpty()){
                     etHarga.error = "Tidak Boleh Kosong"
                     cek = true
                 }
 
                 if(!cek){
-                    if(etGambar.text.toString().trim() != resources.getString(R.string.ket_klik_file)){
-                        postUpdatePlafon(idPlafon, idJenisPlafon!!, fileImage!!, harga)
+                    var keterangan = etKeterangan.text.toString().trim()
+                    var harga = etHarga.text.toString().trim()
+                    var stok = etStok.text.toString().trim()
+
+                    if(etGambar.text.toString().trim() != resources.getString(R.string.add_image)){
+                        postUpdatePlafon(idPlafon, idJenisPlafon!!, keterangan, fileImage!!, stok, harga)
                     } else{
-                        postUpdatePlafonNoImage(idPlafon, idJenisPlafon!!, harga)
+                        postUpdatePlafonNoImage(idPlafon, idJenisPlafon!!, keterangan, stok, harga)
                     }
                 }
             }
@@ -380,12 +430,14 @@ class AdminPlafonActivity : AppCompatActivity() {
         }
     }
 
-    private fun postUpdatePlafon(idPlafon: String, idJenisPlafon: String, gambarPlafon: MultipartBody.Part, harga: String) {
+    private fun postUpdatePlafon(idPlafon: String, idJenisPlafon: String, keterangan: String, gambarPlafon: MultipartBody.Part, stok: String, harga: String) {
         viewModel.postUpdatePlafon(
             convertStringToMultipartBody(""),
             convertStringToMultipartBody(idPlafon),
             convertStringToMultipartBody(idJenisPlafon),
+            convertStringToMultipartBody(keterangan),
             gambarPlafon,
+            convertStringToMultipartBody(stok),
             convertStringToMultipartBody(harga)
         )
     }
@@ -424,9 +476,9 @@ class AdminPlafonActivity : AppCompatActivity() {
     }
 
 
-    private fun postUpdatePlafonNoImage(idPlafon: String, idJenisPlafon: String, harga: String) {
+    private fun postUpdatePlafonNoImage(idPlafon: String, idJenisPlafon: String, keterangan: String, stok: String, harga: String) {
         viewModel.postUpdatePlafonNoImage(
-            "", idPlafon, idJenisPlafon, harga
+            "", idPlafon, idJenisPlafon, keterangan, stok, harga
         )
     }
 

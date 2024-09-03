@@ -12,6 +12,9 @@ class AdminPesananDetailModel (
     @SerializedName("nomor_hp")
     var nomorHp : String? = null,
 
+    @SerializedName("kecamatan")
+    var kecamatan : String? = null,
+
     @SerializedName("alamat")
     var alamat : String? = null,
 

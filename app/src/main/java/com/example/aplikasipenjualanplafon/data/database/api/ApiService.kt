@@ -40,7 +40,6 @@ interface ApiService {
         @Query("id_user") idUser: String
     ): ArrayList<PesananModel>
 
-
     @GET("penjualan-plafon/api/get.php")
     suspend fun getAlamatUser(
         @Query("get_pilih_alamat") get_pilih_alamat: String,
@@ -269,6 +268,7 @@ interface ApiService {
         @Field("keterangan") keterangan:String,
         @Field("nama_lengkap") nama_lengkap:String,
         @Field("nomor_hp") nomor_hp:String,
+        @Field("kecamatan_kab_kota") kecamatan_kab_kota:String,
         @Field("alamat") alamat:String,
         @Field("detail_alamat") detail_alamat:String,
     ): ArrayList<ResponseModel>
@@ -304,8 +304,10 @@ interface ApiService {
     suspend fun postTambahPlafon(
         @Part("tambah_plafon") tambah_plafon: RequestBody,
         @Part("id_jenis_plafon") id_jenis_plafon: RequestBody,
+        @Part("keterangan") keterangan: RequestBody,
         @Part gambar: MultipartBody.Part,
-        @Part("harga_permeter") harga_permeter: RequestBody,
+        @Part("stok") stok: RequestBody,
+        @Part("harga") harga: RequestBody,
     ): ArrayList<ResponseModel>
 
     @Multipart
@@ -314,8 +316,10 @@ interface ApiService {
         @Part("update_plafon") updatePlafon: RequestBody,
         @Part("id_plafon") id_plafon: RequestBody,
         @Part("id_jenis_plafon") id_jenis_plafon: RequestBody,
+        @Part("keterangan") keterangan: RequestBody,
         @Part gambar: MultipartBody.Part,
-        @Part("harga_permeter") harga_permeter: RequestBody,
+        @Part("stok") stok: RequestBody,
+        @Part("harga") harga: RequestBody,
     ): ArrayList<ResponseModel>
 
     @FormUrlEncoded
@@ -324,7 +328,9 @@ interface ApiService {
         @Field("update_plafon_no_image") update_plafon_no_image:String,
         @Field("id_plafon") id_plafon:String,
         @Field("id_jenis_plafon") id_jenis_plafon:String,
-        @Field("harga_permeter") harga_permeter:String
+        @Field("keterangan") keterangan: String,
+        @Field("stok") stok: String,
+        @Field("harga") harga:String
     ): ArrayList<ResponseModel>
 
     @FormUrlEncoded
@@ -333,7 +339,6 @@ interface ApiService {
         @Field("delete_plafon") deletePlafon:String,
         @Field("id_plafon") id_plafon:String
     ): ArrayList<ResponseModel>
-
 
 
 //    @FormUrlEncoded
@@ -531,6 +536,7 @@ interface ApiService {
         @Field("id_plafon") id_plafon: String,
         @Field("nama_lengkap") nama_lengkap: String,
         @Field("nomor_hp") nomor_hp: String,
+        @Field("kecamatan_kab_kota") kecamatan_kab_kota: String,
         @Field("alamat") alamat: String,
         @Field("detail_alamat") detail_alamat: String,
         @Field("jumlah") jumlah: String,
@@ -550,6 +556,7 @@ interface ApiService {
         @Field("id_plafon") id_plafon: String,
         @Field("nama_lengkap") nama_lengkap: String,
         @Field("nomor_hp") nomor_hp: String,
+        @Field("kecamatan_kab_kota") kecamatan_kab_kota: String,
         @Field("alamat") alamat: String,
         @Field("detail_alamat") detail_alamat: String,
         @Field("jumlah") jumlah: String,

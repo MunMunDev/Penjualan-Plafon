@@ -54,13 +54,16 @@ class AdminPlafonViewModel @Inject constructor(
         }
     }
 
-    fun postTambahPlafon(tambahPlafon:RequestBody, idJenisPlafon: RequestBody, gambar: MultipartBody.Part, hargaPermeter:RequestBody ){
+    fun postTambahPlafon(
+        tambahPlafon:RequestBody, idJenisPlafon: RequestBody, keterangan: RequestBody,
+        gambar: MultipartBody.Part, stok:RequestBody, hargaPermeter:RequestBody
+    ){
         viewModelScope.launch {
             _postTambahPlafon.postValue(UIState.Loading)
             delay(1_000)
             try {
                 val postTambahPlafon = api.postTambahPlafon(
-                    tambahPlafon, idJenisPlafon, gambar, hargaPermeter
+                    tambahPlafon, idJenisPlafon, keterangan, gambar, stok, hargaPermeter
                 )
                 _postTambahPlafon.postValue(UIState.Success(postTambahPlafon))
             } catch (ex: Exception){
@@ -70,14 +73,15 @@ class AdminPlafonViewModel @Inject constructor(
     }
 
     fun postUpdatePlafon(
-        updatePlafon:RequestBody, idPlafon: RequestBody, idJenisPlafon: RequestBody, gambar: MultipartBody.Part, hargaPermeter:RequestBody
+        updatePlafon:RequestBody, idPlafon: RequestBody, idJenisPlafon: RequestBody, keterangan: RequestBody,
+        gambar: MultipartBody.Part, stok: RequestBody, hargaPermeter:RequestBody
     ){
         viewModelScope.launch {
             _postUpdatePlafon.postValue(UIState.Loading)
             delay(1_000)
             try {
                 val postTambahPlafon = api.postUpdatePlafon(
-                    updatePlafon, idPlafon, idJenisPlafon, gambar, hargaPermeter
+                    updatePlafon, idPlafon, idJenisPlafon, keterangan, gambar, stok, hargaPermeter
                 )
                 _postUpdatePlafon.postValue(UIState.Success(postTambahPlafon))
             } catch (ex: Exception){
@@ -87,14 +91,14 @@ class AdminPlafonViewModel @Inject constructor(
     }
 
     fun postUpdatePlafonNoImage(
-        updatePlafon:String, idPlafon: String, idJenisPlafon: String, hargaPermeter:String
+        updatePlafon:String, idPlafon: String, idJenisPlafon: String, keterangan: String, stok: String, hargaPermeter:String
     ){
         viewModelScope.launch {
             _postUpdatePlafonNoImage.postValue(UIState.Loading)
             delay(1_000)
             try {
                 val postTambahPlafon = api.postUpdatePlafonNoImage(
-                    updatePlafon, idPlafon, idJenisPlafon, hargaPermeter
+                    updatePlafon, idPlafon, idJenisPlafon, keterangan, stok, hargaPermeter
                 )
                 _postUpdatePlafonNoImage.postValue(UIState.Success(postTambahPlafon))
             } catch (ex: Exception){

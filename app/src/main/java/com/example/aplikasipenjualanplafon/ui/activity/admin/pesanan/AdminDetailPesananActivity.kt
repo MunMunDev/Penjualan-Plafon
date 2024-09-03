@@ -210,6 +210,7 @@ class AdminDetailPesananActivity : AppCompatActivity() {
 
             tvNama.text = valueData.nama
             tvNomorHp.text = valueData.nomorHp
+            tvKecamatan.text = "Kecamatan ${valueData.kecamatan}"
             tvAlamat.text = valueData.alamat
             tvDetailAlamat.text = valueData.detail_alamat
 

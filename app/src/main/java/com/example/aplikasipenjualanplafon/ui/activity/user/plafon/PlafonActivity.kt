@@ -125,6 +125,10 @@ class PlafonActivity : AppCompatActivity() {
                 dialogTambahPesanan(plafon)
             }
 
+            override fun clickItemKeterangan(plafon: PlafonModel, it: View) {
+
+            }
+
             override fun clickItemImage(jenisPlafon: String, image: String) {
                 setShowImage(jenisPlafon, image)
             }

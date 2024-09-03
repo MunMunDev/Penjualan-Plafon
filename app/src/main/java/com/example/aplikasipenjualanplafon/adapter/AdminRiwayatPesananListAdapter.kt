@@ -58,7 +58,11 @@ class AdminRiwayatPesananListAdapter(
             }
 
             holder.itemView.setOnClickListener{
-                onClickItem.clickPesanan(listPesanan.id_user!!, listPesanan.nama!!, it)
+                onClickItem.clickPesanan(
+                    listPesanan.id_user!!, listPesanan.nama!!,
+                    listPesanan.jumlah_jenis_plafon!!.trim().toInt(), it
+                )
+                
 //                if (listPesanan.jumlah_jenis_plafon!!.trim().toInt() > 0){
 //                    onClickItem.clickPesanan(listPesanan.id_user!!, listPesanan.nama!!, it)
 //                } else{

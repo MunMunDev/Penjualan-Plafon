@@ -158,7 +158,7 @@ class AdminRiwayatPesananActivity : AppCompatActivity() {
 
             }
 
-            override fun clickPesanan(idUser: String, nama: String, it: View) {
+            override fun clickPesanan(idUser: String, nama: String, jumlahPesanan: Int, it: View) {
                 val i = Intent(this@AdminRiwayatPesananActivity, AdminRiwayatPesananDetailActivity::class.java)
                 i.putExtra("idUser", idUser)
                 i.putExtra("nama", nama)
