@@ -32,7 +32,7 @@
         android:maxLines="1"
         android:ellipsize="end"/>
 
-    <com.ortiz.touchview.TouchImageView
+    <ImageView
         android:id="@+id/ivShowImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

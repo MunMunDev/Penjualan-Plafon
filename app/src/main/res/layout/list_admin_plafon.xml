@@ -37,9 +37,9 @@
         android:textColor="@color/black"
         android:textStyle="normal"
         android:gravity="center"
+        android:ellipsize="end"
         android:background="@drawable/bg_table"
-        android:lines="1"
-        android:maxLines="1"/>
+        android:lines="1"/>
 
     <TextView
         android:id="@+id/tvStok"

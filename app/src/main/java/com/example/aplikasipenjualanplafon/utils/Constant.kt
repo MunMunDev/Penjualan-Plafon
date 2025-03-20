@@ -1,13 +1,13 @@
 package com.example.aplikasipenjualanplafon.utils
 
 object Constant {
-//    const val BASE_URL = "http://192.168.17.4/"
+//    const val BASE_URL = "http://192.168.1.5/"
 //    const val BASE_URL = "http://192.168.17.7/"
 //    const val BASE_URL = "http://192.168.1.16/"
 //    const val BASE_URL = "http://192.168.167.91/"
 //    const val BASE_URL = "http://192.168.182.137/"
 //    const val BASE_URL = "https://aplikasi-skripsi-um-parepare.000webhostapp.com/"
-    const val BASE_URL = "https://aplikasi-tugas-kampus.my.id/"
+    const val BASE_URL = "https://e-portofolio.web.id/"
     const val LOCATION_GAMBAR = "penjualan-plafon/gambar/"
 
     const val STORAGE_PERMISSION_CODE = 10
@@ -16,6 +16,6 @@ object Constant {
     const val MIDTRANS_CLIENT_KEY = "SB-Mid-client-XKAPR8Xd9KBrS2m3"
 //    const val MIDTRANS_BASE_URL = "https://aplikasitugas17.000webhostapp.com/penjualan-plafon/api/response-midtrans.php/"
 //    const val MIDTRANS_BASE_URL = "https://aplikasi-skripsi-um-parepare.000webhostapp.com/penjualan-plafon/api/response-midtrans.php//"
-    const val MIDTRANS_BASE_URL = "https://aplikasi-tugas-kampus.my.id/penjualan-plafon/api/response-midtrans.php/"
+    const val MIDTRANS_BASE_URL = "https://e-portofolio.web.id/penjualan-plafon/api/response-midtrans.php/"
 
 }
