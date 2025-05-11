@@ -324,11 +324,18 @@ class PaymentActivity : AppCompatActivity() {
             }
             if(alamatModel.id_alamat!!.isNotEmpty()){
 //                Log.d("DetailTAG", "setData: ${alamatModel.kab_kota!!.listKecamatan!![0].kecamatan}")
-                val kecamatan = "${alamatModel.kab_kota!!.listKecamatan!![0].kecamatan}, ${alamatModel.kab_kota!!.kab_kota}"
-                kecamatanKabKota = kecamatan
+                val listProvinsi = alamatModel.provinsi!!
+                val provinsi = listProvinsi.provinsi
+                val listKabKota = listProvinsi.listKabKota!!
+                val kabKota = listKabKota.kab_kota
+                val listKecamatan = listKabKota.listKecamatan!!
+                val kecamatan = listKecamatan.kecamatan
+                val alamatKecamatan = "$kecamatan, $kabKota, $provinsi"
+
+                kecamatanKabKota = alamatKecamatan
                 tvNama.text = alamatModel.nama_lengkap
                 tvNomorHp.text = alamatModel.nomor_hp
-                tvKecamatan.text = kecamatan
+                tvKecamatan.text = alamatKecamatan
                 tvAlamat.text = alamatModel.alamat
                 tvAlamatDetail.text = alamatModel.detail_alamat
             } else{

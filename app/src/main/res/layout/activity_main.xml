@@ -64,7 +64,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="40dp"
-                android:text="Choose the Ceiling You Want and Make Your Home Perfect"
+                android:text="Cari Dan Pesan Plafon Terbaik Yang Anda Inginkan"
                 android:textColor="@color/white"
                 android:textSize="26sp"
                 android:textStyle="bold"

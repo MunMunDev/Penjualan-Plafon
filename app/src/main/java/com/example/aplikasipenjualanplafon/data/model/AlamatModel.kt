@@ -24,6 +24,6 @@ class AlamatModel(
     @SerializedName("main")
     val main: String? = null,
 
-    @SerializedName("kab_kota")
-    val kab_kota: KabKotaModel? = null,
+    @SerializedName("provinsi")
+    val provinsi: ProvinsiModel? = null,
 )

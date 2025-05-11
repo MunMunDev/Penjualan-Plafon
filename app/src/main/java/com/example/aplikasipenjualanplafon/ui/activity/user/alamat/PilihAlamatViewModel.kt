@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.aplikasipenjualanplafon.data.database.api.ApiService
 import com.example.aplikasipenjualanplafon.data.model.AlamatModel
 import com.example.aplikasipenjualanplafon.data.model.KabKotaModel
+import com.example.aplikasipenjualanplafon.data.model.KecamatanModel
+import com.example.aplikasipenjualanplafon.data.model.ProvinsiModel
 import com.example.aplikasipenjualanplafon.data.model.ResponseModel
 import com.example.aplikasipenjualanplafon.utils.network.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,9 @@ class PilihAlamatViewModel @Inject constructor(
     private val api: ApiService
 ): ViewModel() {
     val _alamatUser = MutableLiveData<UIState<ArrayList<AlamatModel>>>()
+    val _provinsi = MutableLiveData<UIState<ArrayList<ProvinsiModel>>>()
     val _kabKota = MutableLiveData<UIState<ArrayList<KabKotaModel>>>()
+    val _kecamatan = MutableLiveData<UIState<ArrayList<KecamatanModel>>>()
     val _updateMainAlamat = MutableLiveData<UIState<ArrayList<ResponseModel>>>()
     val _tambahAlamatUser = MutableLiveData<UIState<ArrayList<ResponseModel>>>()
     val _updateAlamatUser = MutableLiveData<UIState<ArrayList<ResponseModel>>>()
@@ -38,15 +42,41 @@ class PilihAlamatViewModel @Inject constructor(
         }
     }
 
-    fun fetchKabKota(){
+    fun fetchProvinsi(){
+        viewModelScope.launch(Dispatchers.IO) {
+            _provinsi.postValue(UIState.Loading)
+            delay(1_000)
+            try {
+                val dataAlamat = api.getProvinsi("")
+                _provinsi.postValue(UIState.Success(dataAlamat))
+            } catch (ex: Exception){
+                _provinsi.postValue(UIState.Failure("Error pada: ${ex.message}"))
+            }
+        }
+    }
+
+    fun fetchKabKota(idProvinsi: Int){
         viewModelScope.launch(Dispatchers.IO) {
             _kabKota.postValue(UIState.Loading)
             delay(1_000)
             try {
-                val dataAlamat = api.getKabKota("")
+                val dataAlamat = api.getKabKota("", idProvinsi)
                 _kabKota.postValue(UIState.Success(dataAlamat))
             } catch (ex: Exception){
                 _kabKota.postValue(UIState.Failure("Error pada: ${ex.message}"))
+            }
+        }
+    }
+
+    fun fetchKecamatan(idKabKota: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            _kecamatan.postValue(UIState.Loading)
+            delay(1_000)
+            try {
+                val dataAlamat = api.getKecamatan("", idKabKota)
+                _kecamatan.postValue(UIState.Success(dataAlamat))
+            } catch (ex: Exception){
+                _kecamatan.postValue(UIState.Failure("Error pada: ${ex.message}"))
             }
         }
     }
@@ -107,7 +137,9 @@ class PilihAlamatViewModel @Inject constructor(
 
 
     fun getDataAlamat(): LiveData<UIState<ArrayList<AlamatModel>>> = _alamatUser
+    fun getProvinsi(): LiveData<UIState<ArrayList<ProvinsiModel>>> = _provinsi
     fun getKabKota(): LiveData<UIState<ArrayList<KabKotaModel>>> = _kabKota
+    fun getKecamatan(): LiveData<UIState<ArrayList<KecamatanModel>>> = _kecamatan
     fun getUpdateMainAlamat(): LiveData<UIState<ArrayList<ResponseModel>>> = _updateMainAlamat
     fun getTambahAlamat(): LiveData<UIState<ArrayList<ResponseModel>>> = _tambahAlamatUser
     fun getUpdateAlamat(): LiveData<UIState<ArrayList<ResponseModel>>> = _updateAlamatUser

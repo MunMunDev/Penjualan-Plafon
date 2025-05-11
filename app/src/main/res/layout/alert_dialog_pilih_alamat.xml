@@ -105,6 +105,29 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="6dp"
+                    android:text="Provinsi"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+                <Spinner
+                    android:id="@+id/spProvinsi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/etEditNomorHp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    android:background="@drawable/bg_card" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="6dp"
                     android:text="Kota"
                     android:textSize="16sp"
                     android:textColor="@color/black"
@@ -154,7 +177,8 @@
                     android:text="Alamat"
                     android:textSize="16sp"
                     android:textColor="@color/black"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
                 <EditText
                     android:id="@+id/etAlamat"
                     android:layout_width="match_parent"
@@ -170,7 +194,8 @@
                     android:inputType="textMultiLine"
                     android:maxLength="200"
                     android:lines="3"
-                    android:background="@drawable/bg_card" />
+                    android:background="@drawable/bg_card"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="match_parent"

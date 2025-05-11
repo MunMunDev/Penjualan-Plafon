@@ -4,10 +4,12 @@ import com.example.aplikasipenjualanplafon.data.model.AdminPesananDetailModel
 import com.example.aplikasipenjualanplafon.data.model.AlamatModel
 import com.example.aplikasipenjualanplafon.data.model.JenisPlafonModel
 import com.example.aplikasipenjualanplafon.data.model.KabKotaModel
+import com.example.aplikasipenjualanplafon.data.model.KecamatanModel
 import com.example.aplikasipenjualanplafon.data.model.ListKeranjangBelanjaModel
 import com.example.aplikasipenjualanplafon.data.model.ListPesananModel
 import com.example.aplikasipenjualanplafon.data.model.PesananModel
 import com.example.aplikasipenjualanplafon.data.model.PlafonModel
+import com.example.aplikasipenjualanplafon.data.model.ProvinsiModel
 import com.example.aplikasipenjualanplafon.data.model.ResponseModel
 import com.example.aplikasipenjualanplafon.data.model.RiwayatPesananHalModel
 import com.example.aplikasipenjualanplafon.data.model.RiwayatPesananValModel
@@ -119,7 +121,6 @@ interface ApiService {
     suspend fun getAdminRiwayatPesanan(
         @Query("get_admin_riwayat_pesanan") get_admin_riwayat_pesanan: String,
         @Query("id_user") id_user: String,
-
     ): ArrayList<ListPesananModel>
 
     @GET("penjualan-plafon/api/get.php")
@@ -142,9 +143,21 @@ interface ApiService {
     ): ArrayList<RiwayatPesananValModel>
 
     @GET("penjualan-plafon/api/get.php")
+    suspend fun getProvinsi(
+        @Query("get_provinsi") get_provinsi: String,
+    ): ArrayList<ProvinsiModel>
+
+    @GET("penjualan-plafon/api/get.php")
     suspend fun getKabKota(
         @Query("get_kab_kota") get_kab_kota: String,
+        @Query("id_provinsi") id_provinsi: Int,
     ): ArrayList<KabKotaModel>
+
+    @GET("penjualan-plafon/api/get.php")
+    suspend fun getKecamatan(
+        @Query("get_kecamatan") get_kecamatan: String,
+        @Query("id_kab_kota") id_kab_kota: Int,
+    ): ArrayList<KecamatanModel>
 
 
 

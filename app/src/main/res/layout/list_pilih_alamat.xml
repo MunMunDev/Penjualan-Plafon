@@ -69,7 +69,8 @@
             android:text="BTN Pepahri No. 00, Jln. Jend. Ahmad Yani "
             android:textSize="12sp"
             android:textColor="@color/black"
-            android:textStyle="normal"/>
+            android:textStyle="normal"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tvAlamatDetail"
             android:layout_width="0dp"

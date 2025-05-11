@@ -4,6 +4,7 @@ import android.R
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -15,13 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.aplikasipenjualanplafon.adapter.PilihAlamatAdapter
 import com.example.aplikasipenjualanplafon.data.model.AlamatModel
 import com.example.aplikasipenjualanplafon.data.model.KabKotaModel
+import com.example.aplikasipenjualanplafon.data.model.KecamatanModel
+import com.example.aplikasipenjualanplafon.data.model.ProvinsiModel
 import com.example.aplikasipenjualanplafon.data.model.ResponseModel
 import com.example.aplikasipenjualanplafon.databinding.ActivityPilihAlamatBinding
 import com.example.aplikasipenjualanplafon.databinding.AlertDialogPilihAlamatBinding
 import com.example.aplikasipenjualanplafon.ui.activity.user.pembayaran_online.PaymentActivity
-import com.example.aplikasipenjualanplafon.utils.KotaKabProvIndonesia
 import com.example.aplikasipenjualanplafon.utils.LoadingAlertDialog
 import com.example.aplikasipenjualanplafon.utils.OnClickItem
+import com.example.aplikasipenjualanplafon.utils.ProvinsiIndonesia
 import com.example.aplikasipenjualanplafon.utils.SharedPreferencesLogin
 import com.example.aplikasipenjualanplafon.utils.network.UIState
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,14 +36,28 @@ class PilihAlamatActivity : AppCompatActivity() {
     private val viewModel: PilihAlamatViewModel by viewModels()
     private lateinit var sharedPreferences: SharedPreferencesLogin
     @Inject lateinit var loading: LoadingAlertDialog
-    @Inject lateinit var kotaKab: KotaKabProvIndonesia
 
-    private lateinit var listKotaKab: ArrayList<KabKotaModel>
-    private var listNamaKotaKab: ArrayList<String> = arrayListOf()
+    private lateinit var listProvinsi: ArrayList<ProvinsiModel>
+    private lateinit var listKabKota: ArrayList<KabKotaModel>
+    private lateinit var listKecamatan: ArrayList<KecamatanModel>
+    private var listNamaProvinsi: ArrayList<String> = arrayListOf()
+    private var listNamaKabKota: ArrayList<String> = arrayListOf()
     private var listNamaKecamatan: ArrayList<String> = arrayListOf()
+    private var listIdProvinsi: ArrayList<String> = arrayListOf()
+    private var listIdKabKota: ArrayList<String> = arrayListOf()
     private var listIdKecamatan: ArrayList<String> = arrayListOf()
 
-    private lateinit var valueIdKecamatan: String
+//    private lateinit var valueIdProvinsi: String
+//    private lateinit var valueIdKabKota: String
+//    private lateinit var valueIdKecamatan: String
+
+    private var tempSpKabKota: Spinner? = null
+    private var tempSpKecamatan: Spinner? = null
+
+    private var idKabKota = 0
+    private var idKecamatan = 0
+
+    val provinsiIndonesia = ProvinsiIndonesia()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +66,10 @@ class PilihAlamatActivity : AppCompatActivity() {
 
         setSharedPreferences()
         setButton()
-        fetchKabKota()
+        fetchProvinsi()
+        getProvinsi()
         getKabKota()
+        getKecamatan()
         fetchAlamat(sharedPreferences.getIdUser().toString())
         getAlamat()
         getUpdateMainAlamat()
@@ -80,42 +99,12 @@ class PilihAlamatActivity : AppCompatActivity() {
 
         view.apply {
             // Set kab sulsel
-//            val listKotaKabSulsel = kotaKab.kotaKabSulsel()
-            val arrayAdapterKotaKab = ArrayAdapter(
-                this@PilihAlamatActivity,
-                R.layout.simple_spinner_item,
-                listNamaKotaKab
-            )
+//            val listKabKotaSulsel = kotaKab.kotaKabSulsel()
 
-            arrayAdapterKotaKab.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spKabKota.adapter = arrayAdapterKotaKab
+            tempSpKabKota = spKabKota
+            tempSpKecamatan = spKecamatan
 
-            spKabKota.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val kabkota = spKabKota.selectedItem.toString()
-                    var list = listKotaKab.filter {
-                        it.kab_kota == kabkota
-                    }
-
-                    listNamaKecamatan = arrayListOf()
-                    listIdKecamatan = arrayListOf()
-                    for(value in list[0].listKecamatan!!){
-                        listNamaKecamatan.add(value.kecamatan!!)
-                        listIdKecamatan.add(value.id_kecamatan!!)
-                    }
-
-                    setSpinnerKecamatan(spKecamatan, listNamaKecamatan, listIdKecamatan, 0)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                }
-            }
+            setSpinnerProvinsi(spProvinsi, spKabKota, spKecamatan, listNamaProvinsi, listIdProvinsi, 0)
 
             btnSimpan.setOnClickListener {
                 var cek = true
@@ -127,10 +116,10 @@ class PilihAlamatActivity : AppCompatActivity() {
                     etNomorHp.error = "Tidak Boleh Kosong"
                     cek = false
                 }
-                if(etAlamat.text.toString().trim().isEmpty()){
-                    etAlamat.error = "Tidak Boleh Kosong"
-                    cek = false
-                }
+//                if(etAlamat.text.toString().trim().isEmpty()){
+//                    etAlamat.error = "Tidak Boleh Kosong"
+//                    cek = false
+//                }
                 if(etDetailAlamat.text.toString().trim().isEmpty()){
                     etDetailAlamat.error = "Tidak Boleh Kosong"
                     cek = false
@@ -144,7 +133,7 @@ class PilihAlamatActivity : AppCompatActivity() {
 
                     postTambahAlamat(
                         sharedPreferences.getIdUser().toString(),
-                        namaLengkap, nomorHp, valueIdKecamatan, alamat, detailAlamat
+                        namaLengkap, nomorHp, idKecamatan.toString(), alamat, detailAlamat
                     )
                     dialogInputan.dismiss()
                 }
@@ -155,11 +144,108 @@ class PilihAlamatActivity : AppCompatActivity() {
         }
     }
 
+    private fun setSpinnerProvinsi(
+        spProvinsi: Spinner, spKabKota: Spinner, spKecamatan: Spinner, valueListNamaProvinsi: ArrayList<String>,
+        valueListIdProvinsi: ArrayList<String>, idProvinsi: Int
+    ){
+        // set kacamatan
+//            val listProvinsi = kotaKab.kotaKabSulsel()
+        var index = 0
+        if(idProvinsi != 0){
+            index = listProvinsi.indexOfFirst { it.id_provinsi==idProvinsi.toString() }
+
+            if(index == -1){
+                index = 0
+            }
+        }
+        val arrayAdapterProvinsi = ArrayAdapter(
+            this@PilihAlamatActivity,
+            R.layout.simple_spinner_item,
+            valueListNamaProvinsi
+        )
+
+        arrayAdapterProvinsi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spProvinsi.adapter = arrayAdapterProvinsi
+
+        spProvinsi.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val valueIdProvinsi = valueListIdProvinsi[position].toInt()
+                fetchKabKota(valueIdProvinsi)
+
+                Log.d("DetailTAG", "idProvinsi: $valueIdProvinsi")
+//                setSpinnerKabKota(spKabKota, spKecamatan, listNamaKabKota, listIdKabKota, 0)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
+        spProvinsi.setSelection(index)
+    }
+
+    private fun setSpinnerKabKota(
+        spKabKota: Spinner, spKecamatan: Spinner, valueListNamaKabKota: ArrayList<String>,
+        valueListIdKabKota: ArrayList<String>, idKabKota: Int
+    ){
+        var index = 0
+        if(idKabKota != 0){
+            index = listKabKota.indexOfFirst { it.id_kab_kota==idKabKota.toString() }
+
+            if(index == -1){
+                index = 0
+            }
+        }
+
+        val arrayAdapterKabKota = ArrayAdapter(
+            this@PilihAlamatActivity,
+            R.layout.simple_spinner_item,
+            valueListNamaKabKota
+        )
+
+        arrayAdapterKabKota.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spKabKota.adapter = arrayAdapterKabKota
+
+        spKabKota.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val valueIdKabKota = valueListIdKabKota[position].toInt()
+                fetchKecamatan(valueIdKabKota)
+//                setSpinnerKecamatan(spKecamatan, listNamaKecamatan, listIdKecamatan, 0)
+
+                Toast.makeText(this@PilihAlamatActivity, "$valueIdKabKota", Toast.LENGTH_SHORT).show()
+                Log.d("DetailTAG", "idKabKota: $valueIdKabKota ")
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
+
+        spKabKota.setSelection(index)
+    }
+
     private fun setSpinnerKecamatan(
         spKecamatan: Spinner, valueListNamaKecamatan: ArrayList<String>,
-        valueListIdKecamatan: ArrayList<String>, idAlamat: Int){
-        // set kacamatan
-//            val listKecamatan = kotaKab.kotaKabSulsel()
+        valueListIdKecamatan: ArrayList<String>, valueIdKecamatan: Int
+    ){
+        var index = 0
+        if(valueIdKecamatan != 0){
+            index = listKecamatan.indexOfFirst { it.id_kecamatan==valueIdKecamatan.toString() }
+
+            if(index == -1){
+                index = 0
+            }
+        }
+
         val arrayAdapterKecamatan = ArrayAdapter(
             this@PilihAlamatActivity,
             R.layout.simple_spinner_item,
@@ -176,14 +262,15 @@ class PilihAlamatActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                valueIdKecamatan = valueListIdKecamatan[position]
+                idKecamatan = valueListIdKecamatan[position].trim().toInt()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
         }
-        spKecamatan.setSelection(idAlamat)
+
+        spKecamatan.setSelection(index)
     }
 
     private fun postTambahAlamat(
@@ -225,33 +312,6 @@ class PilihAlamatActivity : AppCompatActivity() {
         sharedPreferences = SharedPreferencesLogin(this@PilihAlamatActivity)
     }
 
-    private fun fetchKabKota(){
-        viewModel.fetchKabKota()
-    }
-
-    private fun getKabKota(){
-        viewModel.getKabKota().observe(this@PilihAlamatActivity){result->
-            when(result){
-                is UIState.Loading->{}
-                is UIState.Failure-> setFailureFetchKabKota(result.message)
-                is UIState.Success-> setSuccessFetchKabKota(result.data)
-            }
-        }
-    }
-
-    private fun setFailureFetchKabKota(message: String) {
-
-    }
-
-    private fun setSuccessFetchKabKota(data: ArrayList<KabKotaModel>) {
-        if(data.isNotEmpty()){
-            listKotaKab = data
-            for(value in data){
-                listNamaKotaKab.add(value.kab_kota!!)
-            }
-        }
-    }
-
     private fun fetchAlamat(idUser: String){
         viewModel.fetchDataAlamat(idUser)
     }
@@ -288,7 +348,11 @@ class PilihAlamatActivity : AppCompatActivity() {
                 }
 
                 override fun clickItemEdit(data: AlamatModel, it: View) {
-                    setShowDialogUpdateData(data.id_alamat!!, data.nama_lengkap!!, data.nomor_hp!!, data.alamat!!, data.detail_alamat!!)
+                    setShowDialogUpdateData(
+                        data.id_alamat!!, data.nama_lengkap!!, data.nomor_hp!!,
+                        data.alamat!!, data.detail_alamat!!, data.provinsi!!.id_provinsi!!,
+                        data.provinsi.listKabKota!!.id_kab_kota!!, data.provinsi.listKabKota!!.listKecamatan!!.id_kecamatan!!
+                    )
                 }
 
             })
@@ -331,7 +395,8 @@ class PilihAlamatActivity : AppCompatActivity() {
 
     private fun setShowDialogUpdateData(
         idAlamat: String, namaLengkap: String,
-        nomorHp: String, alamat: String, detailAlamat: String
+        nomorHp: String, alamat: String, detailAlamat: String,
+        idProvinsi: String, valueIdKabKota:String, valueIdKecamatan: String
     ) {
         val view = AlertDialogPilihAlamatBinding.inflate(layoutInflater)
         val alertDialog = AlertDialog.Builder(this@PilihAlamatActivity)
@@ -340,49 +405,19 @@ class PilihAlamatActivity : AppCompatActivity() {
         val dialogInputan = alertDialog.create()
         dialogInputan.show()
 
+        idKabKota = valueIdKabKota.trim().toInt()
+        idKecamatan = valueIdKecamatan.trim().toInt()
+
         view.apply {
             etNamaLengkap.setText(namaLengkap)
             etNomorHp.setText(nomorHp)
             etAlamat.setText(alamat)
             etDetailAlamat.setText(detailAlamat)
 
-            var idSelection = 0
+            tempSpKabKota = spKabKota
+            tempSpKecamatan = spKecamatan
 
-            val arrayAdapterKotaKab = ArrayAdapter(
-                this@PilihAlamatActivity,
-                R.layout.simple_spinner_item,
-                listNamaKotaKab
-            )
-
-            arrayAdapterKotaKab.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spKabKota.adapter = arrayAdapterKotaKab
-
-            spKabKota.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val kabkota = spKabKota.selectedItem.toString()
-                    var list = listKotaKab.filter {
-                        it.kab_kota == kabkota
-                    }
-
-                    listNamaKecamatan = arrayListOf()
-                    listIdKecamatan = arrayListOf()
-                    for(value in list[0].listKecamatan!!){
-                        listNamaKecamatan.add(value.kecamatan!!)
-                        listIdKecamatan.add(value.id_kecamatan!!)
-                    }
-
-                    setSpinnerKecamatan(spKecamatan, listNamaKecamatan, listIdKecamatan, idSelection)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                }
-            }
+            setSpinnerProvinsi(spProvinsi, spKabKota, spKecamatan, listNamaProvinsi, listIdProvinsi, idProvinsi.trim().toInt())
 
             btnSimpan.setOnClickListener {
                 var cek = true
@@ -394,10 +429,10 @@ class PilihAlamatActivity : AppCompatActivity() {
                     etNomorHp.error = "Tidak Boleh Kosong"
                     cek = false
                 }
-                if(etAlamat.text.toString().trim().isEmpty()){
-                    etAlamat.error = "Tidak Boleh Kosong"
-                    cek = false
-                }
+//                if(etAlamat.text.toString().trim().isEmpty()){
+//                    etAlamat.error = "Tidak Boleh Kosong"
+//                    cek = false
+//                }
                 if(etDetailAlamat.text.toString().trim().isEmpty()){
                     etDetailAlamat.error = "Tidak Boleh Kosong"
                     cek = false
@@ -411,7 +446,7 @@ class PilihAlamatActivity : AppCompatActivity() {
 
                     postUpdateAlamat(
                        idAlamat, sharedPreferences.getIdUser().toString(),
-                        valueNamaLengkap, valueNomorHp, valueIdKecamatan, valueAlamat, valueDetailAlamat
+                        valueNamaLengkap, valueNomorHp, idKecamatan.toString(), valueAlamat, valueDetailAlamat
                     )
 
                     dialogInputan.dismiss()
@@ -477,6 +512,137 @@ class PilihAlamatActivity : AppCompatActivity() {
                 smAlamat.visibility = View.GONE
                 smAlamat.stopShimmer()
             }
+        }
+    }
+
+    private fun fetchProvinsi(){
+        viewModel.fetchProvinsi()
+    }
+
+    private fun getProvinsi(){
+        viewModel.getProvinsi().observe(this@PilihAlamatActivity){result->
+            when(result){
+                is UIState.Loading -> {}
+                is UIState.Failure -> setFailureProvinsi(result.message)
+                is UIState.Success -> setSuccessProvinsi(result.data)
+                else -> {}
+            }
+        }
+    }
+
+    private fun setFailureProvinsi(message: String) {
+        Toast.makeText(this@PilihAlamatActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setSuccessProvinsi(data: ArrayList<ProvinsiModel>) {
+        if(data.isNotEmpty()){
+            listProvinsi = arrayListOf()
+            listNamaProvinsi = arrayListOf()
+            listProvinsi = data
+            for(value in data){
+                listNamaProvinsi.add(value.provinsi!!)
+                listIdProvinsi.add(value.id_provinsi!!.toString())
+            }
+        }
+    }
+
+    private fun fetchKabKota(idProvinsi: Int){
+        viewModel.fetchKabKota(idProvinsi)
+    }
+
+    private fun getKabKota(){
+        viewModel.getKabKota().observe(this@PilihAlamatActivity){result->
+            when(result){
+                is UIState.Loading -> {}
+                is UIState.Failure -> setFailureKabKota(result.message)
+                is UIState.Success -> setSuccessKabKota(result.data)
+                else -> {}
+            }
+        }
+    }
+
+    private fun setFailureKabKota(message: String) {
+        Toast.makeText(this@PilihAlamatActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setSuccessKabKota(data: ArrayList<KabKotaModel>) {
+        if(data.isNotEmpty()){
+            listKabKota = arrayListOf()
+            listNamaKabKota = arrayListOf()
+            listIdKabKota = arrayListOf()
+            listKabKota = data
+            for(value in data){
+                listNamaKabKota.add(value.kab_kota!!)
+                listIdKabKota.add(value.id_kab_kota!!)
+            }
+
+            setSpinnerKabKota(tempSpKabKota!!, tempSpKecamatan!!, listNamaKabKota, listIdKabKota, idKabKota)
+        } else{
+            Toast.makeText(this@PilihAlamatActivity, "Kota tidak ada", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun fetchKecamatan(idKabKota: Int){
+        viewModel.fetchKecamatan(idKabKota)
+    }
+
+    private fun getKecamatan(){
+        viewModel.getKecamatan().observe(this@PilihAlamatActivity){result->
+            when(result){
+                is UIState.Loading -> {}
+                is UIState.Failure -> setFailureKecamatan(result.message)
+                is UIState.Success -> setSuccessKecamatan(result.data)
+                else -> {}
+            }
+        }
+    }
+
+    private fun setFailureKecamatan(message: String) {
+        Toast.makeText(this@PilihAlamatActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setSuccessKecamatan(data: ArrayList<KecamatanModel>) {
+        if(data.isNotEmpty()){
+            listKecamatan = arrayListOf()
+            listNamaKecamatan = arrayListOf()
+            listIdKecamatan = arrayListOf()
+            listKecamatan = data
+            for(value in data){
+                listNamaKecamatan.add(value.kecamatan!!)
+                listIdKecamatan.add(value.id_kecamatan!!)
+            }
+
+            setSpinnerKecamatan(tempSpKecamatan!!, listNamaKecamatan, listIdKecamatan, idKecamatan)
+        }
+    }
+
+    fun getLokalProvinsi(){
+        listProvinsi = provinsiIndonesia.provinsi()
+        listNamaProvinsi = arrayListOf()
+        listIdProvinsi = arrayListOf()
+        for(value in listProvinsi){
+            listNamaProvinsi.add(value.provinsi!!)
+            listIdProvinsi.add(value.id_provinsi!!)
+        }
+    }
+
+    fun getLokalKabKota(idProvinsi: String){
+        listKabKota = provinsiIndonesia.kabKota(idProvinsi)
+        listNamaKabKota = arrayListOf()
+        listIdKabKota = arrayListOf()
+        for(value in listKabKota){
+            listNamaKabKota.add(value.kab_kota!!)
+            listIdKabKota.add(value.id_kab_kota!!)
+        }
+    }
+
+    fun getLokalKecamatan(idKabKota: String){
+        listKecamatan = provinsiIndonesia.kecamatan(idKabKota)
+        listNamaKecamatan = arrayListOf()
+        listIdKecamatan = arrayListOf()
+        for(value in listKecamatan){
+            listNamaKecamatan.add(value.kecamatan!!)
+            listIdKecamatan.add(value.id_kecamatan!!)
         }
     }
 

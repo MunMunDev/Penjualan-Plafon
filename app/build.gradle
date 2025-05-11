@@ -73,6 +73,11 @@ dependencies {
     implementation "androidx.activity:activity-ktx:$activityKTXVersion"
     implementation "androidx.fragment:fragment-ktx:$fragmentKTXVersion"
 
+    // Room database
+    def roomVersion = "2.2.5"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"

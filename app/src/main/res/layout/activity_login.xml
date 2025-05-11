@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="30dp"
         android:layout_marginStart="26dp"
-        android:text="Hi, \nPlease Login"
+        android:text="Silahkan \nLogin"
         android:textSize="32sp"
         android:textColor="@color/white"
         android:textStyle="bold"

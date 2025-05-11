@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="26dp"
-            android:text="Scroll Down \nTo Create Account"
+            android:text="Scroll Kebawah\nUntuk Registrasi"
             android:textSize="32sp"
             android:textColor="@color/white"
             android:textStyle="bold"
